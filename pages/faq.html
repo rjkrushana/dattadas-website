@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>वारंवार विचारले जाणारे प्रश्न (FAQ) | दत्तदास (DattaDas.in)</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    .faq-accordion-item {
+      background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-light);
+      margin-bottom: 16px; overflow: hidden; transition: border-color 0.2s;
+    }
+    .faq-question-btn {
+      width: 100%; padding: 20px 24px; text-align: left; font-size: 1.1rem; font-weight: 700;
+      color: var(--color-maroon); display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; background: none; border: none; font-family: inherit;
+    }
+    .faq-answer-content {
+      padding: 0 24px 20px; font-size: 1rem; color: var(--text-secondary); line-height: 1.8;
+      display: none; border-top: 1px solid var(--border-light); padding-top: 16px;
+    }
+    .faq-accordion-item.active .faq-answer-content { display: block; }
+    .faq-icon-arrow { font-size: 0.9rem; transition: transform 0.3s; }
+    .faq-accordion-item.active .faq-icon-arrow { transform: rotate(180deg); }
+  </style>
+</head>
+<body>
+
+  <div id="header-container" data-active="faq"></div>
+
+  <div class="page-hero">
+    <div class="container page-hero-content">
+      <nav class="breadcrumb">
+        <a href="../index.html">मुख्यपृष्ठ</a>
+        <span class="breadcrumb-sep">/</span>
+        <span>नेहमीचे प्रश्न</span>
+      </nav>
+      <h1 class="page-hero-title">वारंवार विचारले जाणारे प्रश्न (FAQ)</h1>
+      <p class="page-hero-desc">ई-बुक खरेदी, डाउनलोड आणि डिजिटल वाचनाविषयी सामान्य शंकांचे निरसन</p>
+    </div>
+  </div>
+
+  <main class="container" style="padding:64px 0;max-width:800px;">
+    <div class="faq-accordion-item active">
+      <button class="faq-question-btn" onclick="toggleFaqAccordion(this)">
+        १. ई-बुक खरेदी केल्यानंतर मला ते कसे मिळेल?
+        <span class="faq-icon-arrow">▼</span>
+      </button>
+      <div class="faq-answer-content">
+        पेमेंट यशस्वी होताच स्क्रीनवर डाउनलोड लिंक दिसेल. याव्यतिरिक्त आपल्या नोंदणीकृत ईमेलवर डाउनलोड लिंक पाठवली जाते आणि आपल्या "माझे ई-बुक्स" खात्यात पुस्तक कायमस्वरूपी उपलब्ध राहते.
+      </div>
+    </div>
+
+    <div class="faq-accordion-item">
+      <button class="faq-question-btn" onclick="toggleFaqAccordion(this)">
+        २. कोणत्या पेमेंट पद्धती स्वीकारल्या जातात?
+        <span class="faq-icon-arrow">▼</span>
+      </button>
+      <div class="faq-answer-content">
+        आपण UPI (Google Pay, PhonePe, Paytm), डेबिट कार्ड, क्रेडिट कार्ड आणि नेट बँकिंगद्वारे सुरक्षित पेमेंट करू शकता. सर्व पेमेंट्स Razorpay द्वारे एनक्रिप्टेड पद्धतीने होतात.
+      </div>
+    </div>
+
+    <div class="faq-accordion-item">
+      <button class="faq-question-btn" onclick="toggleFaqAccordion(this)">
+        ३. ई-बुक कोणत्या डिव्हाइसवर वाचता येईल?
+        <span class="faq-icon-arrow">▼</span>
+      </button>
+      <div class="faq-answer-content">
+        हे ई-बुक PDF आणि ePub दोन्ही फॉरमॅटमध्ये असते. त्यामुळे Android मोबाईल, iPhone, iPad, Tablet, लॅपटॉप, संगणक किंवा Kindle वर कोणत्याही सामान्य PDF रीडर ॲपमध्ये सहज वाचता येते.
+      </div>
+    </div>
+
+    <div class="faq-accordion-item">
+      <button class="faq-question-btn" onclick="toggleFaqAccordion(this)">
+        ४. ७ दिवसांची मनी-बॅक हमी कशी काम करते?
+        <span class="faq-icon-arrow">▼</span>
+      </button>
+      <div class="faq-answer-content">
+        खरेदीनंतर ७ दिवसांच्या आत जर आपल्याला ई-बुकमध्ये तांत्रिक दोष आढळल्यास किंवा समाधान न झाल्यास support@dattadas.in वर ईमेल पाठवा, आम्ही कोणतीही विचारणा न करता पूर्ण रक्कम परत करू.
+      </div>
+    </div>
+
+    <div class="faq-accordion-item">
+      <button class="faq-question-btn" onclick="toggleFaqAccordion(this)">
+        ५. मी किती वेळा ई-बुक डाउनलोड करू शकतो?
+        <span class="faq-icon-arrow">▼</span>
+      </button>
+      <div class="faq-answer-content">
+        आपण आपल्या वैयक्तिक खात्यातून आयुष्यभरात कितीही वेळा पुन्हा ई-बुक डाऊनलोड करू शकता. मोबाईल बदलला तरीही आपले पुस्तक सुरक्षित राहते.
+      </div>
+    </div>
+  </main>
+
+  <div id="footer-container"></div>
+  <div id="cart-drawer-container"></div>
+  <div id="auth-modal-container"></div>
+
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/components.js"></script>
+  <script>
+    function toggleFaqAccordion(btn) {
+      const item = btn.parentElement;
+      item.classList.toggle('active');
+    }
+  </script>
+</body>
+</html>

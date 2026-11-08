@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>माझी आवड (Wishlist) | दत्तदास (DattaDas.in)</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+</head>
+<body>
+
+  <div id="header-container" data-active="wishlist"></div>
+
+  <div class="page-hero">
+    <div class="container page-hero-content">
+      <nav class="breadcrumb">
+        <a href="../index.html">मुख्यपृष्ठ</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="dashboard.html">माझे खाते</a>
+        <span class="breadcrumb-sep">/</span>
+        <span>माझी आवड</span>
+      </nav>
+      <h1 class="page-hero-title">❤️ माझी आवड (Wishlist)</h1>
+      <p class="page-hero-desc">आपण आवडीने साठवून ठेवलेली ग्रंथरत्ने</p>
+    </div>
+  </div>
+
+  <main class="container" style="padding:48px 0;">
+    <div class="grid grid-3" id="wishlist-grid">
+      <!-- Populated via JS -->
+    </div>
+  </main>
+
+  <div id="footer-container"></div>
+  <div id="cart-drawer-container"></div>
+  <div id="auth-modal-container"></div>
+
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let wishIds = Wishlist.get();
+      if (wishIds.length === 0) {
+        wishIds = ['P001', 'P002'];
+      }
+
+      const grid = document.getElementById('wishlist-grid');
+      const books = DATTADAS_PRODUCTS.filter(p => wishIds.includes(p.id));
+
+      if (books.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:64px 20px;background:var(--bg-card);border-radius:var(--radius-xl);border:1px solid var(--border-light);">
+            <div style="font-size:3rem;margin-bottom:16px;">❤️</div>
+            <h3 style="color:var(--color-maroon);margin-bottom:8px;">आवडीमध्ये कोणतीही पुस्तके नाहीत</h3>
+            <p style="color:var(--text-muted);margin-bottom:20px;">आपल्या आवडत्या पुस्तकांवर ❤️ आयकॉन दाबून येथे साठवा.</p>
+            <a href="../books.html" class="btn btn-primary">पुस्तके पहा</a>
+          </div>
+        `;
+      } else {
+        grid.innerHTML = books.map(p => UI.renderBookCard(p)).join('');
+      }
+    });
+  </script>
+</body>
+</html>

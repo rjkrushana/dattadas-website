@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>सुरक्षित चेकआउट | दत्तदास (DattaDas.in)</title>
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+</head>
+<body>
+
+  <div id="header-container" data-active="checkout"></div>
+
+  <div class="page-hero">
+    <div class="container page-hero-content">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">मुख्यपृष्ठ</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="books.html">ई-बुक्स</a>
+        <span class="breadcrumb-sep">/</span>
+        <span>सुरक्षित चेकआउट</span>
+      </nav>
+      <h1 class="page-hero-title">🔒 सुरक्षित चेकआउट</h1>
+      <p class="page-hero-desc">आपली माहिती प्रविष्ट करा आणि तत्काळ ई-बुक डाउनलोड मिळवा</p>
+    </div>
+  </div>
+
+  <main class="container" style="padding:48px 0;">
+    <div class="checkout-layout">
+      <!-- Left: Checkout Information Form -->
+      <div>
+        <form id="checkout-form" onsubmit="handleCheckoutSubmit(event)">
+          <!-- Customer Details -->
+          <div style="background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius-xl);padding:32px;margin-bottom:24px;">
+            <h3 class="checkout-section-title">१. आपली संपर्क माहिती</h3>
+
+            <div class="form-row">
+              <div class="form-group form-input-icon">
+                <label class="form-label" for="cust-name">पूर्ण नाव <span class="required">*</span></label>
+                <span class="icon">👤</span>
+                <input type="text" id="cust-name" class="form-input" placeholder="उदा. रमेश सावंत" required>
+              </div>
+              <div class="form-group form-input-icon">
+                <label class="form-label" for="cust-phone">मोबाईल नंबर <span class="required">*</span></label>
+                <span class="icon">📱</span>
+                <input type="tel" id="cust-phone" class="form-input" placeholder="+91 98765 43210" required>
+              </div>
+            </div>
+
+            <div class="form-group form-input-icon">
+              <label class="form-label" for="cust-email">ईमेल पत्ता <span class="required">*</span></label>
+              <span class="icon">✉</span>
+              <input type="email" id="cust-email" class="form-input" placeholder="आपल्या याच ईमेलवर ई-बुक लिंक पाठवली जाईल" required>
+              <div class="form-hint">महत्त्वाचे: ई-बुक डाउनलोड लिंक या ईमेलवर त्वरित पाठवली जाईल.</div>
+            </div>
+          </div>
+
+          <!-- Payment Methods -->
+          <div style="background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius-xl);padding:32px;margin-bottom:24px;">
+            <h3 class="checkout-section-title">२. पेमेंट पद्धत निवडा</h3>
+
+            <div class="payment-method-options">
+              <label class="payment-option active" onclick="selectPaymentMethod('upi', this)">
+                <input type="radio" name="paymentMethod" value="UPI" checked>
+                <div style="font-size:1.5rem;margin-bottom:4px;">📱</div>
+                <strong>UPI (GPay/PhonePe)</strong>
+              </label>
+              <label class="payment-option" onclick="selectPaymentMethod('card', this)">
+                <input type="radio" name="paymentMethod" value="Card">
+                <div style="font-size:1.5rem;margin-bottom:4px;">💳</div>
+                <strong>डेबिट / क्रेडिट कार्ड</strong>
+              </label>
+              <label class="payment-option" onclick="selectPaymentMethod('netbanking', this)">
+                <input type="radio" name="paymentMethod" value="NetBanking">
+                <div style="font-size:1.5rem;margin-bottom:4px;">🏦</div>
+                <strong>नेट बँकिंग</strong>
+              </label>
+            </div>
+
+            <!-- UPI details -->
+            <div id="payment-upi-details" style="padding:16px;background:var(--bg-secondary);border-radius:var(--radius-md);margin-bottom:16px;">
+              <div class="form-group form-input-icon" style="margin-bottom:0;">
+                <label class="form-label" for="upi-id">आपला UPI ID टाका:</label>
+                <span class="icon">⚡</span>
+                <input type="text" id="upi-id" class="form-input" placeholder="उदा. 9876543210@upi किंवा name@okhdfcbank">
+              </div>
+            </div>
+
+            <!-- Card details mockup -->
+            <div id="payment-card-details" style="display:none;padding:16px;background:var(--bg-secondary);border-radius:var(--radius-md);margin-bottom:16px;">
+              <div class="form-group">
+                <label class="form-label">कार्ड नंबर:</label>
+                <input type="text" class="form-input" placeholder="4111 2222 3333 4444" maxlength="19">
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">कालबाह्य (MM/YY):</label>
+                  <input type="text" class="form-input" placeholder="12/28" maxlength="5">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">CVV:</label>
+                  <input type="password" class="form-input" placeholder="123" maxlength="3">
+                </div>
+              </div>
+            </div>
+
+            <!-- Razorpay Assurance -->
+            <div style="display:flex;align-items:center;gap:12px;font-size:0.85rem;color:var(--text-muted);padding:8px 0;">
+              <span>🛡️</span>
+              <span>Razorpay २८-बिट SSL द्वारे १००% सुरक्षित पेमेंट हाताळले जाते.</span>
+            </div>
+          </div>
+
+          <!-- Coupon Code -->
+          <div style="background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius-xl);padding:24px;margin-bottom:24px;">
+            <label class="form-label" style="font-weight:700;">कूपन कोड आहे का?</label>
+            <div style="display:flex;gap:8px;">
+              <input type="text" id="coupon-code-input" class="form-input" placeholder="उदा. DATTA100" style="text-transform:uppercase;">
+              <button type="button" class="btn btn-outline-maroon" onclick="applyCouponCode()">कूपन लागू करा</button>
+            </div>
+            <div id="coupon-message" style="margin-top:8px;font-size:0.85rem;"></div>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">
+              उपलब्ध कूपन्स: <code>DATTA100</code> (₹१०० सूट), <code>WELCOME10</code> (१०% सूट)
+            </div>
+          </div>
+
+          <!-- Terms & Pay button -->
+          <div style="margin-bottom:24px;">
+            <label class="form-checkbox" style="margin-bottom:20px;">
+              <input type="checkbox" id="terms-agree" required checked>
+              <span class="form-checkbox-label">
+                मी दत्तदासच्या <a href="pages/terms.html" target="_blank" style="color:var(--color-maroon);">नियम व अटी</a> तसेच <a href="pages/refund.html" target="_blank" style="color:var(--color-maroon);">परतावा धोरणाशी</a> सहमत आहे.
+              </span>
+            </label>
+
+            <button type="submit" id="pay-submit-btn" class="btn btn-primary btn-xl btn-full" style="font-size:1.2rem;box-shadow:var(--shadow-maroon);">
+              🔒 सुरक्षित पेमेंट करा (<span id="btn-pay-amount">₹०</span>)
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Right: Order Summary -->
+      <div>
+        <div class="order-summary-card">
+          <h3 style="font-size:1.2rem;font-weight:700;color:var(--color-maroon);margin-bottom:16px;border-bottom:1px solid var(--border-light);padding-bottom:12px;">
+            आपली ऑर्डर (<span id="summary-items-count">०</span>)
+          </h3>
+
+          <div id="summary-items-list">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <div class="price-breakdown">
+            <div class="price-row">
+              <span>मूळ किंमत:</span>
+              <span id="summary-original-price" style="text-decoration:line-through;color:var(--text-muted);">₹०</span>
+            </div>
+            <div class="price-row discount">
+              <span>विशेष सवलत:</span>
+              <span id="summary-discount-amount">-₹०</span>
+            </div>
+            <div class="price-row discount" id="coupon-discount-row" style="display:none;">
+              <span>कूपन सवलत:</span>
+              <span id="summary-coupon-amount">-₹०</span>
+            </div>
+            <div class="price-row total">
+              <span>एकूण देय रक्कम:</span>
+              <span id="summary-final-total">₹०</span>
+            </div>
+          </div>
+
+          <div style="background:var(--color-success-bg);border:1px solid var(--color-success);border-radius:var(--radius-md);padding:12px;margin-top:16px;font-size:0.85rem;color:var(--color-success);font-weight:600;text-align:center;">
+            🎉 आपण <span id="summary-total-savings">₹६००</span> ची बचत करत आहात!
+          </div>
+
+          <div style="margin-top:24px;border-top:1px solid var(--border-light);padding-top:16px;">
+            <div style="font-size:0.85rem;color:var(--text-muted);display:flex;flex-direction:column;gap:8px;">
+              <div>✓ पेमेंट झाल्यावर तत्काळ ई-बुक उपलब्ध</div>
+              <div>✓ आजीवन अमर्याद ऍक्सेस</div>
+              <div>✓ सुरक्षित SSL एन्क्रिप्शन</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Demo Sandbox Payment Modal -->
+  <div class="modal-overlay" id="sandbox-payment-modal">
+    <div class="modal-box" style="text-align:center;">
+      <div style="font-size:3rem;margin-bottom:16px;">💳</div>
+      <h2 class="modal-title">Razorpay सँडबॉक्स पेमेंट</h2>
+      <p style="color:var(--text-muted);margin-bottom:20px;font-size:0.95rem;">
+        स्थानिक वातावरणामध्ये Razorpay सुरक्षित चाचणी पेमेंट सिम्युलेशन.
+      </p>
+
+      <div style="background:var(--bg-secondary);padding:16px;border-radius:var(--radius-md);margin-bottom:24px;text-align:left;font-size:0.9rem;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span>ऑर्डर रक्कम:</span>
+          <strong id="sandbox-amount" style="color:var(--color-maroon);">₹६९९</strong>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span>ग्राहक:</span>
+          <span id="sandbox-customer">-</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span>मोड:</span>
+          <span class="badge badge-gold">Test Mode ✓</span>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;">
+        <button class="btn btn-primary btn-full btn-lg" onclick="simulatePaymentSuccess()">
+          ✓ पेमेंट यशस्वी करा (Test)
+        </button>
+        <button class="btn btn-ghost btn-full" onclick="UI.closeModal('sandbox-payment-modal')">
+          रद्द करा
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-container"></div>
+  <div id="cart-drawer-container"></div>
+  <div id="auth-modal-container"></div>
+
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/components.js"></script>
+  <script>
+    let appliedCoupon = null;
+    let couponDiscount = 0;
+    let selectedPayment = 'UPI';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // If cart is empty, redirect or pre-populate with default product P001 for convenience
+      if (Cart.count() === 0) {
+        Cart.add('P001');
+      }
+
+      // Prefill user data if logged in
+      const user = Auth.currentUser();
+      if (user) {
+        if (user.name) document.getElementById('cust-name').value = user.name;
+        if (user.email) document.getElementById('cust-email').value = user.email;
+        if (user.phone) document.getElementById('cust-phone').value = user.phone;
+      }
+
+      renderOrderSummary();
+    });
+
+    function selectPaymentMethod(type, element) {
+      document.querySelectorAll('.payment-option').forEach(el => el.classList.remove('active'));
+      element.classList.add('active');
+      selectedPayment = element.querySelector('input').value;
+
+      document.getElementById('payment-upi-details').style.display = type === 'upi' ? 'block' : 'none';
+      document.getElementById('payment-card-details').style.display = type === 'card' ? 'block' : 'none';
+    }
+
+    function renderOrderSummary() {
+      const items = Cart.get();
+      const listContainer = document.getElementById('summary-items-list');
+
+      document.getElementById('summary-items-count').textContent = items.length;
+
+      listContainer.innerHTML = items.map(item => {
+        const prod = DATTADAS_PRODUCTS.find(p => p.id === item.productId);
+        return `
+          <div class="order-summary-item">
+            <div class="order-item-cover" style="background:${prod?.coverColor || 'var(--color-maroon)'};color:var(--color-gold);">
+              ${prod?.coverEmoji || '📖'}
+            </div>
+            <div style="flex:1;">
+              <div class="order-item-title">${item.title}</div>
+              <div style="font-size:0.75rem;color:var(--text-muted);">${prod?.format || 'PDF + ePub'}</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="order-item-price">${Price.format(item.price)}</div>
+              <div class="order-item-original">${Price.format(item.originalPrice)}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const subtotal = Cart.subtotal();
+      const origTotal = Cart.originalTotal();
+      const baseSavings = Cart.savings();
+
+      const finalAmount = Math.max(0, subtotal - couponDiscount);
+      const totalSavings = baseSavings + couponDiscount;
+
+      document.getElementById('summary-original-price').textContent = Price.format(origTotal);
+      document.getElementById('summary-discount-amount').textContent = `-${Price.format(baseSavings)}`;
+      document.getElementById('summary-final-total').textContent = Price.format(finalAmount);
+      document.getElementById('btn-pay-amount').textContent = Price.format(finalAmount);
+      document.getElementById('summary-total-savings').textContent = Price.format(totalSavings);
+
+      if (couponDiscount > 0) {
+        document.getElementById('coupon-discount-row').style.display = 'flex';
+        document.getElementById('summary-coupon-amount').textContent = `-${Price.format(couponDiscount)}`;
+      } else {
+        document.getElementById('coupon-discount-row').style.display = 'none';
+      }
+    }
+
+    function applyCouponCode() {
+      const codeInput = document.getElementById('coupon-code-input');
+      const msg = document.getElementById('coupon-message');
+      const code = (codeInput.value || '').trim().toUpperCase();
+
+      if (!code) return;
+
+      try {
+        const subtotal = Cart.subtotal();
+        const res = Coupons.validate(code, subtotal);
+        appliedCoupon = res.coupon;
+        couponDiscount = res.discount;
+        msg.style.color = 'var(--color-success)';
+        msg.textContent = `✓ कूपन "${code}" लागू केले! ${Price.format(couponDiscount)} ची अतिरिक्त सूट.`;
+        renderOrderSummary();
+      } catch (err) {
+        appliedCoupon = null;
+        couponDiscount = 0;
+        msg.style.color = 'var(--color-error)';
+        msg.textContent = `✕ ${err.message}`;
+        renderOrderSummary();
+      }
+    }
+
+    function handleCheckoutSubmit(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('cust-name').value;
+      const email = document.getElementById('cust-email').value;
+      const phone = document.getElementById('cust-phone').value;
+
+      const subtotal = Cart.subtotal();
+      const finalAmount = Math.max(0, subtotal - couponDiscount);
+
+      // Populate demo modal
+      document.getElementById('sandbox-amount').textContent = Price.format(finalAmount);
+      document.getElementById('sandbox-customer').textContent = `${name} (${phone})`;
+
+      // Open sandbox modal
+      UI.openModal('sandbox-payment-modal');
+    }
+
+    function simulatePaymentSuccess() {
+      const name = document.getElementById('cust-name').value;
+      const email = document.getElementById('cust-email').value;
+      const phone = document.getElementById('cust-phone').value;
+
+      let user = Auth.currentUser();
+      if (!user) {
+        // Auto-register guest
+        user = {
+          id: 'GUEST_' + Date.now(),
+          name: name,
+          email: email,
+          phone: phone,
+          role: 'customer'
+        };
+        Store.set('user', user);
+      }
+
+      // Create order
+      const items = Cart.get();
+      const order = Orders.create({
+        userId: user.id,
+        items: items,
+        paymentMethod: selectedPayment,
+        couponCode: appliedCoupon ? appliedCoupon.code : null,
+      });
+
+      // Mark order paid with simulated payment ID
+      const paymentId = 'pay_rzp_' + Math.random().toString(36).substr(2, 10);
+      Orders.markPaid(order.id, paymentId);
+
+      // Clear cart
+      Cart.clear();
+      UI.updateCartBadges();
+
+      // Close modal and redirect
+      UI.closeModal('sandbox-payment-modal');
+      window.location.href = `payment-result.html?status=success&order=${order.id}&payment=${paymentId}`;
+    }
+  </script>
+</body>
+</html>

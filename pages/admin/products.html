@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>उत्पादने व्यवस्थापन (Products) | दत्तदास प्रशासन</title>
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+</head>
+<body>
+
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-logo">
+        <div style="font-weight:800;color:var(--color-gold);letter-spacing:1px;font-size:1.1rem;">DATTADAS</div>
+        <div style="font-size:0.75rem;color:rgba(255,255,255,0.7);">प्रशासन नियंत्रण</div>
+      </div>
+      <nav class="admin-nav">
+        <a href="index.html" class="admin-nav-link">🏠 डॅशबोर्ड</a>
+        <a href="products.html" class="admin-nav-link active">📚 उत्पादने (ई-बुक्स)</a>
+        <a href="orders.html" class="admin-nav-link">📦 ऑर्डर्स</a>
+        <a href="customers.html" class="admin-nav-link">👥 ग्राहक यादी</a>
+        <a href="analytics.html" class="admin-nav-link">📊 विक्री विश्लेषण</a>
+        <a href="settings.html" class="admin-nav-link">⚙️ सेटिंग्ज</a>
+        <a href="../../index.html" class="admin-nav-link" target="_blank">🌐 वेबसाइट पहा</a>
+      </nav>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-topbar">
+        <h2 style="font-size:1.25rem;color:var(--color-maroon);margin:0;">ई-पुस्तके व्यवस्थापन</h2>
+        <button onclick="openAddProductModal()" class="btn btn-primary btn-sm">+ नवीन ई-बुक जोडा</button>
+      </header>
+
+      <div class="admin-content">
+        <div class="admin-table">
+          <div class="admin-table-header">
+            <div class="admin-table-title">सर्व ई-पुस्तकांची यादी (<span id="prod-total-count">०</span>)</div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>कव्हर</th>
+                <th>मराठी शीर्षक</th>
+                <th>लेखक</th>
+                <th>श्रेणी</th>
+                <th>मूळ किंमत</th>
+                <th>सवलत किंमत</th>
+                <th>सूट %</th>
+                <th>कृती</th>
+              </tr>
+            </thead>
+            <tbody id="products-table-body">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add/Edit Product Modal -->
+  <div class="modal-overlay" id="product-modal">
+    <div class="modal-box modal-box-lg">
+      <button class="modal-close" onclick="UI.closeModal('product-modal')">✕</button>
+      <h3 style="color:var(--color-maroon);margin-bottom:20px;" id="modal-form-title">नवीन ई-बुक जोडा</h3>
+
+      <form onsubmit="handleProductSave(event)">
+        <input type="hidden" id="edit-prod-id">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">मराठी शीर्षक <span class="required">*</span></label>
+            <input type="text" id="modal-title" class="form-input" required placeholder="उदा. श्री दत्त महात्म्य">
+          </div>
+          <div class="form-group">
+            <label class="form-label">लेखक <span class="required">*</span></label>
+            <input type="text" id="modal-author" class="form-input" required placeholder="उदा. पं. विश्वनाथ शास्त्री">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">श्रेणी</label>
+            <select id="modal-category" class="form-select">
+              <option value="दत्त संप्रदाय">दत्त संप्रदाय</option>
+              <option value="श्री गुरुचरित्र">श्री गुरुचरित्र</option>
+              <option value="नवनाथ भक्तिसार">नवनाथ भक्तिसार</option>
+              <option value="संत चरित्रे">संत चरित्रे</option>
+              <option value="तत्त्वज्ञान">तत्त्वज्ञान</option>
+              <option value="स्तोत्रे आणि मंत्र">स्तोत्रे आणि मंत्र</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">एकूण पाने</label>
+            <input type="number" id="modal-pages" class="form-input" value="240">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">मूळ किंमत (Regular Price) <span class="required">*</span></label>
+            <input type="number" id="modal-reg-price" class="form-input" value="1299" required oninput="calculateModalDiscount()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">सवलत किंमत (Sale Price) <span class="required">*</span></label>
+            <input type="number" id="modal-sale-price" class="form-input" value="699" required oninput="calculateModalDiscount()">
+          </div>
+        </div>
+
+        <div style="background:var(--bg-secondary);padding:12px;border-radius:var(--radius-md);margin-bottom:16px;font-size:0.9rem;">
+          सवलत: <strong id="modal-discount-display" style="color:var(--color-success);">४६%</strong> | 
+          बचत: <strong id="modal-savings-display" style="color:var(--color-maroon);">₹६००</strong>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">संक्षिप्त माहिती</label>
+          <textarea id="modal-short-desc" class="form-input form-textarea" rows="2" placeholder="पुस्तकाचा २ ओळींचा सारांश"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">PDF फाइल अपलोड (स्थानिक)</label>
+          <input type="file" class="form-input" accept=".pdf,.epub">
+          <div class="form-hint">उत्पादन अद्ययावत करताना सुरक्षित डिजिटल स्टोरेजमध्ये फाईल जोडली जाईल.</div>
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:24px;">
+          <button type="button" class="btn btn-ghost" onclick="UI.closeModal('product-modal')">रद्द करा</button>
+          <button type="submit" class="btn btn-primary">जतन करा (Save)</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../../assets/js/core.js"></script>
+  <script>
+    let localProducts = [...DATTADAS_PRODUCTS];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProductsTable();
+    });
+
+    function renderProductsTable() {
+      document.getElementById('prod-total-count').textContent = localProducts.length;
+      const tbody = document.getElementById('products-table-body');
+      tbody.innerHTML = localProducts.map((p, idx) => {
+        const disc = Price.discount(p.regularPrice, p.salePrice);
+        return `
+          <tr>
+            <td>
+              <div style="width:36px;height:46px;background:${p.coverColor};border-radius:4px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.1rem;">
+                ${p.coverEmoji}
+              </div>
+            </td>
+            <td><strong>${p.titleMarathi}</strong></td>
+            <td>${p.author}</td>
+            <td><span class="badge badge-maroon">${p.category}</span></td>
+            <td><span style="text-decoration:line-through;color:#999;">${Price.format(p.regularPrice)}</span></td>
+            <td><strong style="color:var(--color-maroon);">${Price.format(p.salePrice)}</strong></td>
+            <td><span class="badge badge-saffron">${disc}%</span></td>
+            <td>
+              <div style="display:flex;gap:6px;">
+                <button onclick="editProduct('${p.id}')" class="btn btn-outline-maroon btn-sm">संपादित करा</button>
+                <button onclick="deleteProduct(${idx})" class="btn btn-ghost btn-sm" style="color:#d32f2f;">✕</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function calculateModalDiscount() {
+      const reg = parseFloat(document.getElementById('modal-reg-price').value) || 0;
+      const sale = parseFloat(document.getElementById('modal-sale-price').value) || 0;
+      if (reg > 0 && sale > 0) {
+        const disc = Math.round((reg - sale) / reg * 100);
+        const savings = reg - sale;
+        document.getElementById('modal-discount-display').textContent = `${disc}%`;
+        document.getElementById('modal-savings-display').textContent = Price.format(savings);
+      }
+    }
+
+    function openAddProductModal() {
+      document.getElementById('modal-form-title').textContent = 'नवीन ई-बुक जोडा';
+      document.getElementById('edit-prod-id').value = '';
+      document.getElementById('modal-title').value = '';
+      document.getElementById('modal-author').value = '';
+      document.getElementById('modal-reg-price').value = '1299';
+      document.getElementById('modal-sale-price').value = '699';
+      document.getElementById('modal-short-desc').value = '';
+      calculateModalDiscount();
+      UI.openModal('product-modal');
+    }
+
+    function editProduct(id) {
+      const p = localProducts.find(item => item.id === id);
+      if (!p) return;
+      document.getElementById('modal-form-title').textContent = 'ई-बुक संपादित करा: ' + p.titleMarathi;
+      document.getElementById('edit-prod-id').value = p.id;
+      document.getElementById('modal-title').value = p.titleMarathi;
+      document.getElementById('modal-author').value = p.author;
+      document.getElementById('modal-reg-price').value = p.regularPrice;
+      document.getElementById('modal-sale-price').value = p.salePrice;
+      document.getElementById('modal-short-desc').value = p.shortDesc;
+      calculateModalDiscount();
+      UI.openModal('product-modal');
+    }
+
+    function handleProductSave(e) {
+      e.preventDefault();
+      const id = document.getElementById('edit-prod-id').value;
+      const title = document.getElementById('modal-title').value;
+      const author = document.getElementById('modal-author').value;
+      const category = document.getElementById('modal-category').value;
+      const reg = parseFloat(document.getElementById('modal-reg-price').value);
+      const sale = parseFloat(document.getElementById('modal-sale-price').value);
+      const shortDesc = document.getElementById('modal-short-desc').value;
+
+      if (id) {
+        const p = localProducts.find(item => item.id === id);
+        if (p) {
+          p.titleMarathi = title;
+          p.author = author;
+          p.category = category;
+          p.regularPrice = reg;
+          p.salePrice = sale;
+          p.shortDesc = shortDesc;
+        }
+        Toast.success('✓ ई-बुक अद्ययावत केले!');
+      } else {
+        const newProd = {
+          id: 'P00' + (localProducts.length + 1),
+          slug: 'book-' + (localProducts.length + 1),
+          titleMarathi: title,
+          author: author,
+          category: category,
+          categorySlug: 'datta-sampraday',
+          regularPrice: reg,
+          salePrice: sale,
+          shortDesc: shortDesc,
+          coverColor: '#651F2B',
+          coverEmoji: '📖',
+          rating: 4.8,
+          ratingCount: 1,
+          format: 'PDF + ePub',
+          pages: 240,
+          featured: false
+        };
+        localProducts.unshift(newProd);
+        Toast.success('✓ नवीन ई-बुक यशस्वीरीत्या जोडले!');
+      }
+
+      UI.closeModal('product-modal');
+      renderProductsTable();
+    }
+
+    function deleteProduct(idx) {
+      if (confirm('नक्की हे ई-बुक हटवायचे आहे का?')) {
+        localProducts.splice(idx, 1);
+        renderProductsTable();
+        Toast.info('ई-बुक हटवले.');
+      }
+    }
+  </script>
+</body>
+</html>

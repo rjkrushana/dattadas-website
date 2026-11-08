@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>माझे ऑर्डर्स | दत्तदास (DattaDas.in)</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+</head>
+<body>
+
+  <div id="header-container" data-active="account"></div>
+
+  <div class="page-hero">
+    <div class="container page-hero-content">
+      <nav class="breadcrumb">
+        <a href="../index.html">मुख्यपृष्ठ</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="dashboard.html">माझे खाते</a>
+        <span class="breadcrumb-sep">/</span>
+        <span>माझे ऑर्डर्स</span>
+      </nav>
+      <h1 class="page-hero-title">माझे ऑर्डर्स व पावत्या</h1>
+      <p class="page-hero-desc">आपल्या सर्व खरेदींचा तपशील, पावत्या आणि पेमेंट स्थिती</p>
+    </div>
+  </div>
+
+  <main class="container" style="padding:48px 0;">
+    <div style="background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-sm);">
+      <div style="padding:20px 24px;border-bottom:1px solid var(--border-light);display:flex;justify-content:space-between;align-items:center;">
+        <h3 style="margin:0;color:var(--color-maroon);">सर्व ऑर्डर्स</h3>
+        <span style="font-size:0.85rem;color:var(--text-muted);">डिजिटल पावत्या त्वरित उपलब्ध</span>
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ऑर्डर ID</th>
+              <th>तारीख</th>
+              <th>पुस्तके</th>
+              <th>पेमेंट पद्धत</th>
+              <th>एकूण रक्कम</th>
+              <th>स्थिती</th>
+              <th>कृती</th>
+            </tr>
+          </thead>
+          <tbody id="orders-tbody">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer-container"></div>
+  <div id="cart-drawer-container"></div>
+  <div id="auth-modal-container"></div>
+
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let user = Auth.currentUser();
+      if (!user) {
+        user = { id: 'U_DEMO', name: 'भाविक वाचक', email: 'user@example.com', role: 'customer' };
+        Store.set('user', user);
+      }
+
+      let orders = Orders.getUserOrders(user.id);
+      if (orders.length === 0) {
+        // Sample order for demo
+        orders = [{
+          id: 'ORD' + (Date.now() - 86400000),
+          userId: user.id,
+          createdAt: new Date(Date.now() - 86400000).toISOString(),
+          items: [{ productId: 'P001', title: 'श्री दत्त महात्म्य', price: 699, originalPrice: 1299 }],
+          subtotal: 699,
+          paymentMethod: 'UPI',
+          status: 'paid'
+        }];
+      }
+
+      const tbody = document.getElementById('orders-tbody');
+      tbody.innerHTML = orders.map(ord => `
+        <tr>
+          <td><strong style="color:var(--color-maroon);">${ord.id}</strong></td>
+          <td>${new Date(ord.createdAt).toLocaleDateString('mr-IN')}</td>
+          <td>${ord.items.map(i => i.title).join(', ')}</td>
+          <td>${ord.paymentMethod || 'UPI'}</td>
+          <td><strong>${Price.format(ord.subtotal)}</strong></td>
+          <td><span class="badge badge-success">यशस्वी (Paid)</span></td>
+          <td>
+            <a href="my-books.html" class="btn btn-outline-maroon btn-sm">ई-बुक उघडा</a>
+          </td>
+        </tr>
+      `).join('');
+    });
+  </script>
+</body>
+</html>

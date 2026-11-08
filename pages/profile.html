@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>माझी प्रोफाईल माहिती | दत्तदास (DattaDas.in)</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+</head>
+<body>
+
+  <div id="header-container" data-active="account"></div>
+
+  <div class="page-hero">
+    <div class="container page-hero-content">
+      <nav class="breadcrumb">
+        <a href="../index.html">मुख्यपृष्ठ</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="dashboard.html">माझे खाते</a>
+        <span class="breadcrumb-sep">/</span>
+        <span>प्रोफाईल माहिती</span>
+      </nav>
+      <h1 class="page-hero-title">माझी वैयक्तिक माहिती</h1>
+      <p class="page-hero-desc">आपले नाव, संपर्क आणि सुरक्षा पर्याय अद्ययावत करा</p>
+    </div>
+  </div>
+
+  <main class="container" style="padding:48px 0;max-width:680px;">
+    <div style="background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius-xl);padding:32px;box-shadow:var(--shadow-sm);">
+      <form onsubmit="handleProfileUpdate(event)">
+        <div class="form-group form-input-icon">
+          <label class="form-label">पूर्ण नाव <span class="required">*</span></label>
+          <span class="icon">👤</span>
+          <input type="text" id="prof-name" class="form-input" required>
+        </div>
+
+        <div class="form-group form-input-icon">
+          <label class="form-label">ईमेल पत्ता</label>
+          <span class="icon">✉</span>
+          <input type="email" id="prof-email" class="form-input" readonly style="background:var(--bg-secondary);cursor:not-allowed;">
+          <div class="form-hint">सुरक्षेच्या कारणास्तव ईमेल बदलण्यासाठी ग्राहक सेवेशी संपर्क करा.</div>
+        </div>
+
+        <div class="form-group form-input-icon">
+          <label class="form-label">मोबाईल नंबर</label>
+          <span class="icon">📱</span>
+          <input type="tel" id="prof-phone" class="form-input">
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-full" style="margin-top:16px;">
+          माहिती जतन करा
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <div id="footer-container"></div>
+  <div id="cart-drawer-container"></div>
+  <div id="auth-modal-container"></div>
+
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let user = Auth.currentUser();
+      if (!user) {
+        user = { id: 'U_DEMO', name: 'भाविक वाचक', email: 'user@example.com', phone: '+91 98765 43210', role: 'customer' };
+        Store.set('user', user);
+      }
+
+      document.getElementById('prof-name').value = user.name || '';
+      document.getElementById('prof-email').value = user.email || '';
+      document.getElementById('prof-phone').value = user.phone || '';
+    });
+
+    function handleProfileUpdate(e) {
+      e.preventDefault();
+      const user = Auth.currentUser();
+      if (user) {
+        user.name = document.getElementById('prof-name').value;
+        user.phone = document.getElementById('prof-phone').value;
+        Store.set('user', user);
+        Toast.success('✓ माहिती यशस्वीरीत्या अद्ययावत झाली!');
+      }
+    }
+  </script>
+</body>
+</html>

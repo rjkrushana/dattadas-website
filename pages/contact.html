@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>आमच्याशी संपर्क करा | दत्तदास (DattaDas.in)</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+</head>
+<body>
+
+  <div id="header-container" data-active="contact"></div>
+
+  <div class="page-hero">
+    <div class="container page-hero-content">
+      <nav class="breadcrumb">
+        <a href="../index.html">मुख्यपृष्ठ</a>
+        <span class="breadcrumb-sep">/</span>
+        <span>संपर्क</span>
+      </nav>
+      <h1 class="page-hero-title">आमच्याशी संपर्क करा</h1>
+      <p class="page-hero-desc">ई-बुक खरेदी, डाउनलोड किंवा इतर मदतीसाठी आम्ही सदैव तत्पर आहोत</p>
+    </div>
+  </div>
+
+  <main class="container" style="padding:64px 0;">
+    <div class="grid grid-2" style="align-items:start;gap:48px;">
+      <!-- Contact Info -->
+      <div>
+        <h2 style="color:var(--color-maroon);font-size:1.8rem;margin-bottom:16px;">दत्तदास ग्राहक सेवा कक्ष</h2>
+        <p style="color:var(--text-secondary);line-height:1.8;margin-bottom:28px;">
+          आपल्याला ई-बुक डाऊनलोड करण्यात कोणतीही अडचण आल्यास अथवा पुस्तकांविषयी अधिक जाणून घ्यायचे असल्यास आपण खालील माध्यमांद्वारे संपर्क साधू शकता.
+        </p>
+
+        <div style="display:flex;flex-direction:column;gap:20px;">
+          <div style="display:flex;align-items:center;gap:16px;">
+            <div style="width:48px;height:48px;border-radius:50%;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;font-size:1.4rem;">✉️</div>
+            <div>
+              <div style="font-size:0.85rem;color:var(--text-muted);">ईमेल पाठवा:</div>
+              <strong style="color:var(--color-maroon);font-size:1.05rem;">support@dattadas.in</strong>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:16px;">
+            <div style="width:48px;height:48px;border-radius:50%;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;font-size:1.4rem;">📱</div>
+            <div>
+              <div style="font-size:0.85rem;color:var(--text-muted);">व्हॉट्सॲप / फोन मदत:</div>
+              <strong style="color:var(--color-maroon);font-size:1.05rem;">+91 98765 43210</strong>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:16px;">
+            <div style="width:48px;height:48px;border-radius:50%;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;font-size:1.4rem;">⏰</div>
+            <div>
+              <div style="font-size:0.85rem;color:var(--text-muted);">कामकाजाची वेळ:</div>
+              <strong style="color:var(--text-primary);font-size:1rem;">सोमवार ते शनिवार, सकाळी ९:०० ते संध्याकाळी ७:००</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div style="background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius-xl);padding:32px;box-shadow:var(--shadow-md);">
+        <h3 style="color:var(--color-maroon);margin-bottom:20px;font-size:1.3rem;">संदेश पाठवा</h3>
+        <form onsubmit="handleContactSubmit(event)">
+          <div class="form-group form-input-icon">
+            <label class="form-label">आपले नाव <span class="required">*</span></label>
+            <span class="icon">👤</span>
+            <input type="text" class="form-input" placeholder="उदा. सुरेश शिंदे" required>
+          </div>
+
+          <div class="form-group form-input-icon">
+            <label class="form-label">ईमेल पत्ता <span class="required">*</span></label>
+            <span class="icon">✉</span>
+            <input type="email" class="form-input" placeholder="name@example.com" required>
+          </div>
+
+          <div class="form-group form-input-icon">
+            <label class="form-label">मोबाईल नंबर</label>
+            <span class="icon">📱</span>
+            <input type="tel" class="form-input" placeholder="+91 00000 00000">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">आपला संदेश किंवा शंका <span class="required">*</span></label>
+            <textarea class="form-input form-textarea" rows="4" placeholder="आपला संदेश येथे लिहा..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg btn-full">
+            संदेश पाठवा ✉️
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer-container"></div>
+  <div id="cart-drawer-container"></div>
+  <div id="auth-modal-container"></div>
+
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/components.js"></script>
+  <script>
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      Toast.success('✓ आपला संदेश प्राप्त झाला आहे! आम्ही लवकरच उत्तर देऊ.');
+      e.target.reset();
+    }
+  </script>
+</body>
+</html>

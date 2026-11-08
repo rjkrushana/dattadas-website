@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>पेमेंट निकाल | दत्तदास (DattaDas.in)</title>
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <style>
+    .result-container { max-width: 680px; margin: 48px auto; text-align: center; }
+    .result-card {
+      background: var(--bg-card); border-radius: var(--radius-2xl);
+      border: 1px solid var(--border-light); padding: 48px 32px;
+      box-shadow: var(--shadow-xl);
+    }
+    .result-icon {
+      width: 88px; height: 88px; border-radius: 50%; margin: 0 auto 24px;
+      display: flex; align-items: center; justify-content: center; font-size: 3rem;
+    }
+    .result-icon.success { background: var(--color-success-bg); color: var(--color-success); border: 2px solid var(--color-success); }
+    .result-icon.failed { background: var(--color-error-bg); color: var(--color-error); border: 2px solid var(--color-error); }
+    .order-details-box {
+      background: var(--bg-secondary); border-radius: var(--radius-lg);
+      padding: 24px; margin: 32px 0; text-align: left;
+    }
+    .order-detail-row {
+      display: flex; justify-content: space-between; padding: 8px 0;
+      border-bottom: 1px solid var(--border-light); font-size: 0.95rem;
+    }
+    .order-detail-row:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+
+  <div id="header-container"></div>
+
+  <main class="container">
+    <div class="result-container">
+      <div class="result-card">
+        <!-- SUCCESS STATE -->
+        <div id="success-state" style="display:none;">
+          <div class="result-icon success">✓</div>
+          <h1 style="font-size:2rem;font-weight:800;color:var(--color-maroon);margin-bottom:12px;">खरेदी यशस्वी झाली!</h1>
+          <p style="font-size:1.1rem;color:var(--text-secondary);max-width:500px;margin:0 auto 24px;">
+            🙏 श्री दत्तगुरूंच्या कृपेने आपली खरेदी पूर्ण झाली आहे. आपल्या ई-बुकची डाउनलोड लिंक खाली उपलब्ध आहे.
+          </p>
+
+          <div class="order-details-box">
+            <div class="order-detail-row">
+              <span style="color:var(--text-muted);">ऑर्डर क्रमांक:</span>
+              <strong id="res-order-id" style="color:var(--color-maroon);">-</strong>
+            </div>
+            <div class="order-detail-row">
+              <span style="color:var(--text-muted);">पेमेंट ID (Razorpay):</span>
+              <span id="res-payment-id" style="font-family:monospace;">-</span>
+            </div>
+            <div class="order-detail-row">
+              <span style="color:var(--text-muted);">तारीख व वेळ:</span>
+              <span id="res-order-date">-</span>
+            </div>
+            <div class="order-detail-row">
+              <span style="color:var(--text-muted);">पेमेंट स्थिती:</span>
+              <span class="badge badge-success">यशस्वी (Paid) ✓</span>
+            </div>
+          </div>
+
+          <!-- Download Books List -->
+          <div style="text-align:left;margin-bottom:32px;">
+            <h3 style="font-size:1.1rem;color:var(--color-maroon);margin-bottom:16px;">आपली खरेदी केलेली ई-पुस्तके:</h3>
+            <div id="res-books-list" style="display:flex;flex-direction:column;gap:12px;">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+
+          <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+            <a href="pages/my-books.html" class="btn btn-primary btn-lg">
+              📚 माझे सर्व ई-बुक्स पहा
+            </a>
+            <a href="index.html" class="btn btn-outline-maroon btn-lg">
+              मुख्यपृष्ठावर जा
+            </a>
+          </div>
+        </div>
+
+        <!-- FAILED STATE -->
+        <div id="failed-state" style="display:none;">
+          <div class="result-icon failed">✕</div>
+          <h1 style="font-size:2rem;font-weight:800;color:var(--color-error);margin-bottom:12px;">पेमेंट अपूर्ण किंवा अयशस्वी</h1>
+          <p style="font-size:1.05rem;color:var(--text-secondary);max-width:500px;margin:0 auto 24px;">
+            काही तांत्रिक कारणास्तव पेमेंट पूर्ण होऊ शकले नाही. आपल्या खात्यातून पैसे कापले असल्यास ते आपोआप परत मिळतील.
+          </p>
+          <div style="display:flex;gap:16px;justify-content:center;">
+            <a href="checkout.html" class="btn btn-primary btn-lg">पुन्हा प्रयत्न करा</a>
+            <a href="index.html" class="btn btn-ghost btn-lg">मुख्यपृष्ठ</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer-container"></div>
+  <div id="cart-drawer-container"></div>
+  <div id="auth-modal-container"></div>
+
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const status = urlParams.get('status') || 'success';
+      const orderId = urlParams.get('order');
+      const paymentId = urlParams.get('payment') || 'pay_' + Math.random().toString(36).substr(2, 9);
+
+      if (status === 'success') {
+        document.getElementById('success-state').style.display = 'block';
+        document.getElementById('res-order-id').textContent = orderId || 'ORD' + Date.now();
+        document.getElementById('res-payment-id').textContent = paymentId;
+        document.getElementById('res-order-date').textContent = new Date().toLocaleString('mr-IN');
+
+        // Look up order
+        const orders = Orders.all();
+        const order = orders.find(o => o.id === orderId);
+        const user = Auth.currentUser();
+
+        const booksContainer = document.getElementById('res-books-list');
+        const items = (order && order.items) ? order.items : [{ productId: 'P001', title: 'श्री दत्त महात्म्य', price: 699 }];
+
+        booksContainer.innerHTML = items.map(item => {
+          const prod = DATTADAS_PRODUCTS.find(p => p.id === item.productId);
+          return `
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--bg-secondary);border-radius:var(--radius-md);border:1px solid var(--border-light);gap:16px;">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <span style="font-size:2rem;">${prod?.coverEmoji || '📖'}</span>
+                <div>
+                  <strong>${item.title}</strong>
+                  <div style="font-size:0.8rem;color:var(--text-muted);">${prod?.format || 'PDF + ePub'} • ${prod?.pages || 240} पाने</div>
+                </div>
+              </div>
+              <button onclick="downloadBookFile('${item.productId}')" class="btn btn-gold btn-sm">
+                📥 PDF डाउनलोड करा
+              </button>
+            </div>
+          `;
+        }).join('');
+
+      } else {
+        document.getElementById('failed-state').style.display = 'block';
+      }
+    });
+
+    function downloadBookFile(productId) {
+      const user = Auth.currentUser();
+      const product = DATTADAS_PRODUCTS.find(p => p.id === productId);
+      const title = product ? product.titleMarathi : 'दत्तदास ई-बुक';
+
+      // Log download
+      if (user) {
+        Downloads.log(productId, user.id);
+      }
+
+      // Generate a downloadable text/pdf blob for testing locally
+      const sampleContent = `
+=====================================================
+${title}
+दत्तदास डिजिटल पब्लिकेशन (https://dattadas.in)
+भक्ती, ज्ञान आणि संस्कारांचा डिजिटल ठेवा
+=====================================================
+
+श्री गुरुदेव दत्त!
+
+हे अधिकृत ई-बुक खरेदी केल्याबद्दल धन्यवाद.
+ग्राहक: ${user ? user.name : 'मान्यवर वाचक'}
+दिनांक: ${new Date().toLocaleDateString('mr-IN')}
+
+[या ई-पुस्तकात मूळ ग्रंथाचे सर्व अध्याय, श्लोक, भावार्थ व साधना विधी समाविष्ट आहेत.]
+=====================================================
+      `.trim();
+
+      const blob = new Blob([sampleContent], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${product?.slug || 'dattadas-ebook'}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      Toast.success(`📥 "${title}" डाउनलोड सुरू झाले!`);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ई-बुक तपशील | दत्तदास (DattaDas.in)</title>
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <style>
+    .product-detail-layout { display: grid; grid-template-columns: 420px 1fr; gap: 48px; padding: 48px 0; align-items: start; }
+    .product-cover-container { position: sticky; top: 100px; text-align: center; }
+    .book-3d-wrap {
+      width: 280px; height: 380px; margin: 0 auto 24px; position: relative;
+      perspective: 1000px;
+    }
+    .book-3d {
+      width: 100%; height: 100%; border-radius: 4px 16px 16px 4px;
+      background: var(--product-color, var(--color-maroon));
+      box-shadow: 12px 16px 40px rgba(53,37,31,0.25), inset -4px 0 10px rgba(0,0,0,0.3);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 32px 24px; position: relative; transform: rotateY(-8deg); transition: transform 0.4s ease;
+      color: white; text-align: center; border-left: 8px solid rgba(0,0,0,0.4);
+    }
+    .book-3d:hover { transform: rotateY(0deg) scale(1.02); }
+    .book-3d-om { font-size: 3.5rem; color: var(--color-gold); margin-bottom: 16px; }
+    .book-3d-title { font-size: 1.3rem; font-weight: 800; color: white; line-height: 1.4; margin-bottom: 8px; }
+    .book-3d-author { font-size: 0.85rem; color: var(--color-gold-pale); }
+    
+    .product-info-panel { display: flex; flex-direction: column; gap: 20px; }
+    .product-badge-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .product-main-title { font-size: 2.2rem; font-weight: 800; color: var(--text-primary); line-height: 1.25; }
+    .product-author-line { font-size: 1.05rem; color: var(--text-secondary); }
+    .product-rating-box { display: flex; align-items: center; gap: 8px; font-size: 0.95rem; }
+    
+    .product-pricing-card {
+      background: var(--bg-secondary); border-radius: var(--radius-xl);
+      border: 1px solid var(--border-light); padding: 24px;
+    }
+    .product-price-row { display: flex; align-items: baseline; gap: 16px; margin-bottom: 12px; }
+    .price-big { font-size: 3rem; font-weight: 900; color: var(--color-maroon); line-height: 1; }
+    .price-strike { font-size: 1.4rem; color: var(--text-muted); text-decoration: line-through; }
+    .discount-pill-big {
+      background: var(--color-saffron); color: white; font-weight: 700;
+      padding: 4px 12px; border-radius: var(--radius-full); font-size: 0.9rem;
+    }
+    .savings-text { font-size: 0.95rem; color: var(--color-success); font-weight: 600; }
+    
+    .product-action-buttons { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 16px; }
+    .product-action-buttons .btn { flex: 1; min-width: 200px; }
+
+    /* Tabs */
+    .tabs-nav { display: flex; gap: 8px; border-bottom: 2px solid var(--border-light); margin: 40px 0 24px; }
+    .tab-button {
+      padding: 12px 24px; font-size: 1.05rem; font-weight: 600; color: var(--text-muted);
+      cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s;
+    }
+    .tab-button.active { color: var(--color-maroon); border-bottom-color: var(--color-maroon); }
+    .tab-pane { display: none; padding: 12px 0 32px; line-height: 1.8; color: var(--text-secondary); }
+    .tab-pane.active { display: block; }
+    
+    .toc-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+    .toc-item {
+      display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+      background: var(--bg-secondary); border-radius: var(--radius-md); font-weight: 500;
+    }
+    .toc-item::before { content: '📖'; }
+
+    @media (max-width: 900px) {
+      .product-detail-layout { grid-template-columns: 1fr; }
+      .product-cover-container { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="header-container" data-active="books"></div>
+
+  <div class="page-hero">
+    <div class="container page-hero-content">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">मुख्यपृष्ठ</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="books.html">सर्व ई-बुक्स</a>
+        <span class="breadcrumb-sep">/</span>
+        <span id="breadcrumb-title">ई-बुक तपशील</span>
+      </nav>
+      <h1 class="page-hero-title" id="hero-book-title">ग्रंथ तपशील</h1>
+      <p class="page-hero-desc" id="hero-book-desc">संपूर्ण माहिती, अनुक्रमणिका आणि तात्काळ सुरक्षित डाउनलोड</p>
+    </div>
+  </div>
+
+  <main class="container">
+    <div class="product-detail-layout" id="product-container">
+      <!-- Left: 3D Book Cover -->
+      <div class="product-cover-container">
+        <div class="book-3d-wrap">
+          <div class="book-3d" id="product-cover-3d">
+            <span class="book-3d-om" id="product-cover-emoji">🙏</span>
+            <h2 class="book-3d-title" id="product-cover-title">श्री दत्त महात्म्य</h2>
+            <div class="book-3d-author" id="product-cover-author">दत्तदास प्रकाशन</div>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:center;gap:12px;margin-bottom:16px;">
+          <span class="badge badge-gold" id="format-badge">PDF + ePub</span>
+          <span class="badge badge-maroon" id="lang-badge">मराठी भाषा</span>
+          <span class="badge badge-saffron" id="pages-badge">२४० पाने</span>
+        </div>
+
+        <div style="background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:16px;font-size:0.85rem;color:var(--text-muted);line-height:1.6;">
+          🔒 <strong>१००% सुरक्षित:</strong> खरेदीनंतर तत्काळ आपल्या खात्यात ई-बुक प्राप्त होते व कधीही पुन्हा डाउनलोड करता येते.
+        </div>
+      </div>
+
+      <!-- Right: Product Information & Checkout Actions -->
+      <div class="product-info-panel">
+        <div class="product-badge-row">
+          <span class="badge badge-saffron" id="category-badge">दत्त संप्रदाय</span>
+          <span class="badge badge-gold" id="bestseller-badge">विशेष लोकप्रिय</span>
+        </div>
+
+        <h1 class="product-main-title" id="product-title">श्री दत्त महात्म्य</h1>
+        <div class="product-author-line" id="product-author">लेखक: पं. विश्वनाथ शास्त्री</div>
+
+        <div class="product-rating-box">
+          <span class="stars" id="product-stars">★★★★★</span>
+          <strong id="product-rating-val">४.९</strong>
+          <span style="color:var(--text-muted);" id="product-reviews-count">(३२५ भाविकांचे अभिप्राय)</span>
+        </div>
+
+        <p style="font-size:1.05rem;line-height:1.7;color:var(--text-secondary);" id="product-short-desc">
+          भगवान दत्तात्रेयांच्या महिमेचे संपूर्ण वर्णन करणारा अनमोल ग्रंथ.
+        </p>
+
+        <!-- Pricing Card -->
+        <div class="product-pricing-card">
+          <div class="product-price-row">
+            <span class="price-big" id="price-sale">₹६९९</span>
+            <span class="price-strike" id="price-regular">₹१,२९९</span>
+            <span class="discount-pill-big" id="price-discount">४६% सूट</span>
+          </div>
+          <div class="savings-text" id="price-savings">
+            🎉 आपण ₹६०० ची थेट बचत करत आहात!
+          </div>
+
+          <div class="product-action-buttons">
+            <button id="add-to-cart-btn" class="btn btn-primary btn-xl" onclick="triggerAddToCart()">
+              🛒 कार्टमध्ये जोडा
+            </button>
+            <button id="buy-now-btn" class="btn btn-saffron btn-xl" onclick="triggerBuyNow()">
+              ⚡ आताच खरेदी करा (₹६९९)
+            </button>
+          </div>
+        </div>
+
+        <!-- Trust Badges -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:8px;">
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.85rem;color:var(--text-secondary);">
+            <span>⚡</span> तात्काळ डाउनलोड
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.85rem;color:var(--text-secondary);">
+            <span>🛡️</span> ७ दिवस मनी-बॅक
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.85rem;color:var(--text-secondary);">
+            <span>📱</span> सर्व डिव्हाइस सुसंगत
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div>
+          <div class="tabs-nav">
+            <div class="tab-button active" onclick="switchTab('desc', this)">ग्रंथ परिचय</div>
+            <div class="tab-button" onclick="switchTab('toc', this)">अनुक्रमणिका</div>
+            <div class="tab-button" onclick="switchTab('info', this)">तपशील व वैशिष्ट्ये</div>
+            <div class="tab-button" onclick="switchTab('reviews', this)">वाचक अभिप्राय</div>
+          </div>
+
+          <!-- Description Tab -->
+          <div id="tab-desc" class="tab-pane active">
+            <div id="product-full-desc"></div>
+          </div>
+
+          <!-- Table of Contents Tab -->
+          <div id="tab-toc" class="tab-pane">
+            <ul class="toc-list" id="toc-list-container">
+              <!-- Rendered via JS -->
+            </ul>
+          </div>
+
+          <!-- Features Info Tab -->
+          <div id="tab-info" class="tab-pane">
+            <table class="data-table" style="background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius-md);">
+              <tr><td style="font-weight:700;width:200px;">भाषा:</td><td id="info-lang">मराठी</td></tr>
+              <tr><td style="font-weight:700;">एकूण पाने:</td><td id="info-pages">२४० पाने</td></tr>
+              <tr><td style="font-weight:700;">फाइल फॉरमॅट:</td><td>PDF आणि ePub (दोन्ही उपलब्ध)</td></tr>
+              <tr><td style="font-weight:700;">सुसंगतता:</td><td>Android, iOS, PC, Mac, Kindle, Tablet</td></tr>
+              <tr><td style="font-weight:700;">प्रकाशन:</td><td>दत्तदास डिजिटल पब्लिकेशन</td></tr>
+            </table>
+          </div>
+
+          <!-- Reviews Tab -->
+          <div id="tab-reviews" class="tab-pane">
+            <div style="display:flex;flex-direction:column;gap:16px;">
+              <div style="padding:16px;background:var(--bg-card);border-radius:var(--radius-lg);border:1px solid var(--border-light);">
+                <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                  <strong>अशोक भोसले (सातारा)</strong>
+                  <span class="stars">★★★★★</span>
+                </div>
+                <p style="font-size:0.9rem;color:var(--text-secondary);margin:0;">
+                  "ग्रंथाची मांडणी अतिशय सुंदर आहे. फॉन्ट मोठा आणि वाचण्यास सोपा आहे. दत्तभक्तांसाठी हे पुस्तक नित्यपठणासाठी वरदान आहे."
+                </p>
+              </div>
+              <div style="padding:16px;background:var(--bg-card);border-radius:var(--radius-lg);border:1px solid var(--border-light);">
+                <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                  <strong>मंदाकिनी जोशी (ठाणे)</strong>
+                  <span class="stars">★★★★★</span>
+                </div>
+                <p style="font-size:0.9rem;color:var(--text-secondary);margin:0;">
+                  "माझ्या आयपॅडवर पुस्तक डाऊनलोड करून वाचले. अतिशय सुलभ आणि स्पष्ट मजकूर. मनाला खूप आनंद मिळाला."
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Books -->
+    <section class="section" style="border-top:1px solid var(--border-light);">
+      <div class="section-header">
+        <div class="section-eyebrow">इतर ग्रंथरत्ने</div>
+        <h2 class="section-title">संबंधित <span class="accent">ई-पुस्तके</span></h2>
+      </div>
+      <div class="grid grid-4" id="related-books-grid">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+  <div id="cart-drawer-container"></div>
+  <div id="auth-modal-container"></div>
+
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/components.js"></script>
+  <script>
+    let currentProduct = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const prodId = urlParams.get('id') || 'P001';
+
+      currentProduct = DATTADAS_PRODUCTS.find(p => p.id === prodId) || DATTADAS_PRODUCTS[0];
+
+      if (currentProduct) {
+        document.title = `${currentProduct.titleMarathi} | दत्तदास (DattaDas.in)`;
+        document.getElementById('breadcrumb-title').textContent = currentProduct.titleMarathi;
+        document.getElementById('hero-book-title').textContent = currentProduct.titleMarathi;
+        document.getElementById('hero-book-desc').textContent = currentProduct.shortDesc;
+
+        // 3D Cover
+        const cover3d = document.getElementById('product-cover-3d');
+        cover3d.style.setProperty('--product-color', currentProduct.coverColor);
+        document.getElementById('product-cover-emoji').textContent = currentProduct.coverEmoji;
+        document.getElementById('product-cover-title').textContent = currentProduct.titleMarathi;
+        document.getElementById('product-cover-author').textContent = currentProduct.author;
+
+        // Badges & Meta
+        document.getElementById('category-badge').textContent = currentProduct.category;
+        document.getElementById('pages-badge').textContent = `${currentProduct.pages} पाने`;
+        document.getElementById('product-title').textContent = currentProduct.titleMarathi;
+        document.getElementById('product-author').textContent = `लेखक: ${currentProduct.author}`;
+        document.getElementById('product-rating-val').textContent = currentProduct.rating;
+        document.getElementById('product-reviews-count').textContent = `(${currentProduct.ratingCount} भाविकांचे अभिप्राय)`;
+        document.getElementById('product-short-desc').textContent = currentProduct.shortDesc;
+
+        // Pricing
+        const disc = Price.discount(currentProduct.regularPrice, currentProduct.salePrice);
+        const savings = Price.savings(currentProduct.regularPrice, currentProduct.salePrice);
+        document.getElementById('price-sale').textContent = Price.format(currentProduct.salePrice);
+        document.getElementById('price-regular').textContent = Price.format(currentProduct.regularPrice);
+        document.getElementById('price-discount').textContent = `${disc}% सूट`;
+        document.getElementById('price-savings').textContent = `🎉 आपण ${Price.format(savings)} ची थेट बचत करत आहात!`;
+        document.getElementById('buy-now-btn').textContent = `⚡ आताच खरेदी करा (${Price.format(currentProduct.salePrice)})`;
+
+        // Full Desc
+        document.getElementById('product-full-desc').innerHTML = `<p>${currentProduct.fullDesc.replace(/\n/g, '<br><br>')}</p>`;
+
+        // TOC
+        const tocContainer = document.getElementById('toc-list-container');
+        if (currentProduct.tableOfContents && currentProduct.tableOfContents.length > 0) {
+          tocContainer.innerHTML = currentProduct.tableOfContents.map(ch => `<li class="toc-item">${ch}</li>`).join('');
+        } else {
+          tocContainer.innerHTML = `
+            <li class="toc-item">प्रकरण १: भूमिका व महात्म्य</li>
+            <li class="toc-item">प्रकरण २: मुख्य चरित्र व शिकवण</li>
+            <li class="toc-item">प्रकरण ३: साधना, स्तोत्रे व नामस्मरण</li>
+            <li class="toc-item">प्रकरण ४: फलश्रुती व भक्तांचे अनुभव</li>
+          `;
+        }
+
+        // Table Info
+        document.getElementById('info-lang').textContent = currentProduct.language;
+        document.getElementById('info-pages').textContent = `${currentProduct.pages} पाने`;
+
+        // Related Books
+        const related = DATTADAS_PRODUCTS.filter(p => p.id !== currentProduct.id).slice(0, 4);
+        document.getElementById('related-books-grid').innerHTML = related.map(p => UI.renderBookCard(p)).join('');
+      }
+    });
+
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + tabId).classList.add('active');
+    }
+
+    function triggerAddToCart() {
+      if (currentProduct) {
+        handleAddToCart(currentProduct.id, document.getElementById('add-to-cart-btn'));
+      }
+    }
+
+    function triggerBuyNow() {
+      if (currentProduct) {
+        handleBuyNow(currentProduct.id);
+      }
+    }
+  </script>
+</body>
+</html>

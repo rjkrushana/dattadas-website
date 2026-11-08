@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>सर्व ई-बुक्स | दत्तदास (DattaDas.in)</title>
+  <meta name="description" content="दत्त संप्रदाय, गुरुचरित्र, संत चरित्रे आणि अध्यात्मिक ग्रंथांची संपूर्ण यादी.">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <style>
+    .catalog-layout { display: grid; grid-template-columns: 280px 1fr; gap: 32px; padding: 48px 0; }
+    .filter-card { background: var(--bg-card); border-radius: var(--radius-xl); border: 1px solid var(--border-light); padding: 24px; position: sticky; top: 90px; }
+    .filter-group { margin-bottom: 24px; }
+    .filter-group-title { font-size: 1rem; font-weight: 700; color: var(--color-maroon); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+    .filter-list { display: flex; flex-direction: column; gap: 8px; max-height: 240px; overflow-y: auto; padding-right: 4px; }
+    .filter-checkbox { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; cursor: pointer; color: var(--text-secondary); }
+    .filter-checkbox input { accent-color: var(--color-maroon); width: 16px; height: 16px; }
+    .catalog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+    .no-results { text-align: center; padding: 60px 20px; background: var(--bg-card); border-radius: var(--radius-xl); border: 1px solid var(--border-light); grid-column: 1 / -1; }
+    @media (max-width: 900px) {
+      .catalog-layout { grid-template-columns: 1fr; }
+      .filter-card { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="header-container" data-active="books"></div>
+
+  <div class="page-hero">
+    <div class="container page-hero-content">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">मुख्यपृष्ठ</a>
+        <span class="breadcrumb-sep">/</span>
+        <span>सर्व ई-बुक्स</span>
+      </nav>
+      <h1 class="page-hero-title">सर्व अध्यात्मिक ई-बुक्स</h1>
+      <p class="page-hero-desc">दत्त संप्रदाय, गुरुचरित्र, संत साहित्याचा संपूर्ण मराठी डिजिटल संग्रह</p>
+    </div>
+  </div>
+
+  <main class="container">
+    <div class="catalog-layout">
+      <!-- SIDEBAR FILTERS -->
+      <aside class="filter-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;border-bottom:1px solid var(--border-light);padding-bottom:12px;">
+          <h3 style="font-size:1.1rem;font-weight:700;color:var(--color-maroon);margin:0;">फिल्टर्स</h3>
+          <button onclick="resetFilters()" style="font-size:0.8rem;color:var(--color-saffron);cursor:pointer;font-weight:600;">सर्व पुसा</button>
+        </div>
+
+        <!-- Search in Catalog -->
+        <div class="filter-group">
+          <div class="filter-group-title">शोध</div>
+          <input type="text" id="catalog-search" class="form-input" placeholder="नाव किंवा लेखक..." oninput="applyFilters()" style="padding:8px 12px;font-size:0.9rem;">
+        </div>
+
+        <!-- Category Filter -->
+        <div class="filter-group">
+          <div class="filter-group-title">श्रेणी</div>
+          <div class="filter-list" id="category-filter-list">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+
+        <!-- Price Sort -->
+        <div class="filter-group">
+          <div class="filter-group-title">किमतीनुसार क्रमवारी</div>
+          <select id="sort-select" class="form-select" onchange="applyFilters()" style="padding:8px 12px;font-size:0.9rem;">
+            <option value="default">निवडक (Default)</option>
+            <option value="price-asc">किंमत: कमी ते जास्त</option>
+            <option value="price-desc">किंमत: जास्त ते कमी</option>
+            <option value="rating">सर्वोत्तम रेटिंग</option>
+            <option value="newest">नवीन प्रकाशने</option>
+          </select>
+        </div>
+
+        <div style="margin-top:20px;padding:16px;background:var(--bg-secondary);border-radius:var(--radius-md);border:1px dashed var(--color-gold);">
+          <div style="font-size:0.85rem;font-weight:700;color:var(--color-maroon);margin-bottom:4px;">💡 विशेष ऑफर</div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);">श्री दत्त महात्म्यवर ४६% विशेष सवलत चालू आहे. आजच लाभ घ्या!</div>
+        </div>
+      </aside>
+
+      <!-- MAIN CATALOG -->
+      <section>
+        <div class="catalog-header">
+          <div style="font-size:1rem;color:var(--text-muted);">
+            एकूण <strong id="results-count" style="color:var(--color-maroon);">०</strong> ई-बुक्स उपलब्ध
+          </div>
+        </div>
+
+        <div class="grid grid-3" id="books-grid">
+          <!-- Populated dynamically -->
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div id="footer-container"></div>
+  <div id="cart-drawer-container"></div>
+  <div id="auth-modal-container"></div>
+
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/components.js"></script>
+  <script>
+    let activeCategory = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Parse URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const catParam = urlParams.get('category');
+      const searchParam = urlParams.get('search');
+
+      if (catParam) activeCategory = catParam;
+      if (searchParam) {
+        const searchInput = document.getElementById('catalog-search');
+        if (searchInput) searchInput.value = searchParam;
+      }
+
+      // Render category filter checkboxes
+      const catList = document.getElementById('category-filter-list');
+      if (catList && window.DATTADAS_CATEGORIES) {
+        catList.innerHTML = DATTADAS_CATEGORIES.map(c => `
+          <label class="filter-checkbox">
+            <input type="checkbox" value="${c.slug}" class="cat-checkbox" ${c.slug === activeCategory ? 'checked' : ''} onchange="applyFilters()">
+            <span>${c.name} (${c.count})</span>
+          </label>
+        `).join('');
+      }
+
+      applyFilters();
+    });
+
+    function applyFilters() {
+      const searchVal = (document.getElementById('catalog-search').value || '').toLowerCase().trim();
+      const sortVal = document.getElementById('sort-select').value;
+      const checkedCats = Array.from(document.querySelectorAll('.cat-checkbox:checked')).map(cb => cb.value);
+
+      let filtered = [...DATTADAS_PRODUCTS];
+
+      // Filter by search
+      if (searchVal) {
+        filtered = filtered.filter(p => 
+          p.titleMarathi.toLowerCase().includes(searchVal) ||
+          p.author.toLowerCase().includes(searchVal) ||
+          p.shortDesc.toLowerCase().includes(searchVal) ||
+          p.tags.some(t => t.toLowerCase().includes(searchVal))
+        );
+      }
+
+      // Filter by category
+      if (checkedCats.length > 0) {
+        filtered = filtered.filter(p => checkedCats.includes(p.categorySlug));
+      }
+
+      // Sort
+      if (sortVal === 'price-asc') {
+        filtered.sort((a, b) => a.salePrice - b.salePrice);
+      } else if (sortVal === 'price-desc') {
+        filtered.sort((a, b) => b.salePrice - a.salePrice);
+      } else if (sortVal === 'rating') {
+        filtered.sort((a, b) => b.rating - a.rating);
+      } else if (sortVal === 'newest') {
+        filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      }
+
+      // Update count & render
+      document.getElementById('results-count').textContent = filtered.length;
+      const grid = document.getElementById('books-grid');
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="no-results">
+            <div style="font-size:3rem;margin-bottom:12px;">🔍</div>
+            <h3 style="font-size:1.2rem;color:var(--color-maroon);margin-bottom:8px;">कोणतेही ई-बुक सापडले नाही</h3>
+            <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:16px;">कृपया वेगळा शब्द शोधून पहा किंवा फिल्टर्स रीसेट करा.</p>
+            <button onclick="resetFilters()" class="btn btn-primary btn-sm">फिल्टर्स पूर्ववत करा</button>
+          </div>
+        `;
+      } else {
+        grid.innerHTML = filtered.map(p => UI.renderBookCard(p)).join('');
+        Animate.init();
+      }
+    }
+
+    function resetFilters() {
+      document.getElementById('catalog-search').value = '';
+      document.getElementById('sort-select').value = 'default';
+      document.querySelectorAll('.cat-checkbox').forEach(cb => cb.checked = false);
+      applyFilters();
+    }
+  </script>
+</body>
+</html>

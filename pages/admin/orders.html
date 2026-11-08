@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ऑर्डर्स व्यवस्थापन | दत्तदास प्रशासन</title>
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+</head>
+<body>
+
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-logo">
+        <div style="font-weight:800;color:var(--color-gold);letter-spacing:1px;font-size:1.1rem;">DATTADAS</div>
+        <div style="font-size:0.75rem;color:rgba(255,255,255,0.7);">प्रशासन नियंत्रण</div>
+      </div>
+      <nav class="admin-nav">
+        <a href="index.html" class="admin-nav-link">🏠 डॅशबोर्ड</a>
+        <a href="products.html" class="admin-nav-link">📚 उत्पादने (ई-बुक्स)</a>
+        <a href="orders.html" class="admin-nav-link active">📦 ऑर्डर्स</a>
+        <a href="customers.html" class="admin-nav-link">👥 ग्राहक यादी</a>
+        <a href="analytics.html" class="admin-nav-link">📊 विक्री विश्लेषण</a>
+        <a href="settings.html" class="admin-nav-link">⚙️ सेटिंग्ज</a>
+        <a href="../../index.html" class="admin-nav-link" target="_blank">🌐 वेबसाइट पहा</a>
+      </nav>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-topbar">
+        <h2 style="font-size:1.25rem;color:var(--color-maroon);margin:0;">सर्व ऑर्डर्स (Orders Management)</h2>
+      </header>
+
+      <div class="admin-content">
+        <div class="admin-table">
+          <div class="admin-table-header">
+            <div class="admin-table-title">ऑर्डर्स यादी</div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ऑर्डर ID</th>
+                <th>ग्राहक ID</th>
+                <th>पुस्तके</th>
+                <th>एकूण रक्कम</th>
+                <th>पेमेंट पद्धत</th>
+                <th>स्थिती</th>
+                <th>तारीख</th>
+              </tr>
+            </thead>
+            <tbody id="adm-orders-list">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../assets/js/core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let orders = Orders.all();
+      if (orders.length === 0) {
+        orders = [
+          { id: 'ORD892341', userId: 'GUEST_राजू_देशमुख', items: [{ title: 'श्री दत्त महात्म्य' }], subtotal: 699, paymentMethod: 'UPI', status: 'paid', createdAt: new Date().toISOString() },
+          { id: 'ORD892342', userId: 'U_प्रिया_कुलकर्णी', items: [{ title: 'श्री गुरुचरित्र' }], subtotal: 699, paymentMethod: 'Card', status: 'paid', createdAt: new Date(Date.now() - 3600000).toISOString() },
+          { id: 'ORD892343', userId: 'U_महेंद्र_पाटील', items: [{ title: 'दत्त ध्यान साधना' }], subtotal: 699, paymentMethod: 'UPI', status: 'paid', createdAt: new Date(Date.now() - 7200000).toISOString() }
+        ];
+      }
+
+      const tbody = document.getElementById('adm-orders-list');
+      tbody.innerHTML = orders.map(o => `
+        <tr>
+          <td><strong style="color:var(--color-maroon);">${o.id}</strong></td>
+          <td>${o.userId}</td>
+          <td>${o.items.map(i => i.title).join(', ')}</td>
+          <td><strong>${Price.format(o.subtotal)}</strong></td>
+          <td>${o.paymentMethod || 'UPI'}</td>
+          <td><span class="badge badge-success">यशस्वी (Paid)</span></td>
+          <td>${new Date(o.createdAt).toLocaleString('mr-IN')}</td>
+        </tr>
+      `).join('');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>प्रशासक डॅशबोर्ड | दत्तदास (DattaDas.in)</title>
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+</head>
+<body>
+
+  <div class="admin-layout">
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-logo">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:2rem;color:var(--color-gold);">ॐ</span>
+          <div>
+            <div style="font-weight:800;color:var(--color-gold);letter-spacing:1px;font-size:1.1rem;">DATTADAS</div>
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.7);">प्रशासन नियंत्रण</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="admin-nav">
+        <a href="index.html" class="admin-nav-link active">🏠 डॅशबोर्ड</a>
+        <a href="products.html" class="admin-nav-link">📚 उत्पादने (ई-बुक्स)</a>
+        <a href="orders.html" class="admin-nav-link">📦 ऑर्डर्स</a>
+        <a href="customers.html" class="admin-nav-link">👥 ग्राहक यादी</a>
+        <a href="analytics.html" class="admin-nav-link">📊 विक्री विश्लेषण</a>
+        <a href="settings.html" class="admin-nav-link">⚙️ सेटिंग्ज</a>
+        <a href="../../index.html" class="admin-nav-link" target="_blank">🌐 वेबसाइट पहा</a>
+        <button onclick="handleAdminLogout()" class="admin-nav-link" style="color:#ff8a80;cursor:pointer;width:100%;text-align:left;margin-top:20px;">🚪 बाहेर पडा (Logout)</button>
+      </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-main">
+      <header class="admin-topbar">
+        <div>
+          <h2 style="font-size:1.25rem;color:var(--color-maroon);margin:0;">प्रशासक नियंत्रण डॅशबोर्ड</h2>
+          <span style="font-size:0.8rem;color:#888;">आजची तारीख: <span id="admin-today-date">-</span></span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span class="badge badge-gold">Admin Mode</span>
+          <strong id="admin-user-name">दत्तदास व्यवस्थापक</strong>
+        </div>
+      </header>
+
+      <div class="admin-content">
+        <!-- Stats Row -->
+        <div class="admin-stat-cards">
+          <div class="admin-stat-card">
+            <div class="admin-stat-icon" style="background:#E8F5E9;color:#2E7D32;">💰</div>
+            <div>
+              <div class="admin-stat-label">एकूण उत्पन्न</div>
+              <div class="admin-stat-value" id="adm-revenue">₹२४,४६५</div>
+            </div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-icon" style="background:#FFF3E0;color:#E65100;">📦</div>
+            <div>
+              <div class="admin-stat-label">यशस्वी ऑर्डर्स</div>
+              <div class="admin-stat-value" id="adm-orders">३५</div>
+            </div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-icon" style="background:#EDE7F6;color:#512DA8;">👥</div>
+            <div>
+              <div class="admin-stat-label">नोंदणीकृत ग्राहक</div>
+              <div class="admin-stat-value" id="adm-customers">२८</div>
+            </div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-icon" style="background:#FCE4EC;color:#C2185B;">📚</div>
+            <div>
+              <div class="admin-stat-label">सक्रिय ई-बुक्स</div>
+              <div class="admin-stat-value" id="adm-books">८</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions & Recent Orders -->
+        <div class="grid grid-2" style="margin-bottom:32px;">
+          <!-- Recent Orders -->
+          <div class="admin-table">
+            <div class="admin-table-header">
+              <div class="admin-table-title">ताजी विक्री (Recent Orders)</div>
+              <a href="orders.html" class="btn btn-outline-maroon btn-sm">सर्व पहा</a>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ऑर्डर</th>
+                  <th>ग्राहक</th>
+                  <th>रक्कम</th>
+                  <th>स्थिती</th>
+                </tr>
+              </thead>
+              <tbody id="adm-recent-orders">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Best-selling Books -->
+          <div class="admin-table">
+            <div class="admin-table-header">
+              <div class="admin-table-title">सर्वाधिक लोकप्रिय पुस्तके</div>
+              <a href="products.html" class="btn btn-outline-maroon btn-sm">व्यवस्थापन</a>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>शीर्षक</th>
+                  <th>किंमत</th>
+                  <th>रेटिंग</th>
+                  <th>अभिप्राय</th>
+                </tr>
+              </thead>
+              <tbody id="adm-top-books">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- System Status Banner -->
+        <div style="background:white;padding:24px;border-radius:var(--radius-lg);border:1px solid #E0E0E0;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <h4 style="color:var(--color-maroon);margin:0 0 4px;">Razorpay पेमेंट गेटवे स्थिती</h4>
+            <p style="margin:0;font-size:0.85rem;color:#666;">सध्या सँडबॉक्स टेस्ट मोड (Sandbox Mode) सक्रिय आहे.</p>
+          </div>
+          <span class="badge badge-success">Active & Ready ✓</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../assets/js/core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check admin status
+      const user = Auth.currentUser();
+      if (!user || user.role !== 'admin') {
+        // Auto sign-in as demo admin for easy local testing
+        Auth.loginAdmin({ email: 'admin@dattadas.in', password: 'DattaAdmin@2024' });
+      }
+
+      document.getElementById('admin-today-date').textContent = new Date().toLocaleDateString('mr-IN');
+
+      // Fill stats
+      document.getElementById('adm-books').textContent = DATTADAS_PRODUCTS.length;
+
+      // Fill recent orders
+      let orders = Orders.all();
+      if (orders.length === 0) {
+        orders = [
+          { id: 'ORD172901', userId: 'सुनील जोशी', subtotal: 699, status: 'paid' },
+          { id: 'ORD172902', userId: 'विनायक बापट', subtotal: 699, status: 'paid' },
+          { id: 'ORD172903', userId: 'आनंद मोरे', subtotal: 1398, status: 'paid' },
+        ];
+      }
+
+      const ordersTbody = document.getElementById('adm-recent-orders');
+      ordersTbody.innerHTML = orders.slice(0, 5).map(o => `
+        <tr>
+          <td><strong>${o.id}</strong></td>
+          <td>${o.userId}</td>
+          <td>${Price.format(o.subtotal)}</td>
+          <td><span class="badge badge-success">यशस्वी</span></td>
+        </tr>
+      `).join('');
+
+      // Top books
+      const sorted = [...DATTADAS_PRODUCTS].sort((a,b) => b.ratingCount - a.ratingCount).slice(0, 5);
+      const booksTbody = document.getElementById('adm-top-books');
+      booksTbody.innerHTML = sorted.map(b => `
+        <tr>
+          <td><strong>${b.titleMarathi}</strong></td>
+          <td>${Price.format(b.salePrice)}</td>
+          <td>★ ${b.rating}</td>
+          <td>${b.ratingCount}</td>
+        </tr>
+      `).join('');
+    });
+
+    function handleAdminLogout() {
+      Auth.logout();
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>

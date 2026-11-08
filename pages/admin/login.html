@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>प्रशासक लॉगिन | दत्तदास (DattaDas.in)</title>
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <style>
+    body { background: var(--color-maroon); display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
+    .admin-login-box { background: white; border-radius: var(--radius-2xl); padding: 40px; width: 100%; max-width: 440px; box-shadow: 0 20px 60px rgba(0,0,0,0.4); text-align: center; }
+  </style>
+</head>
+<body>
+
+  <div class="admin-login-box">
+    <div style="font-size:3rem;margin-bottom:12px;">ॐ</div>
+    <h1 style="color:var(--color-maroon);font-size:1.6rem;margin-bottom:6px;">दत्तदास प्रशासन</h1>
+    <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:28px;">प्रशासक नियंत्रण कक्षात प्रवेश करा</p>
+
+    <form onsubmit="handleAdminLogin(event)" style="text-align:left;">
+      <div class="form-group form-input-icon">
+        <label class="form-label">प्रशासक ईमेल <span class="required">*</span></label>
+        <span class="icon">✉</span>
+        <input type="email" id="admin-email" class="form-input" value="admin@dattadas.in" required>
+      </div>
+
+      <div class="form-group form-input-icon">
+        <label class="form-label">पासवर्ड <span class="required">*</span></label>
+        <span class="icon">🔒</span>
+        <input type="password" id="admin-password" class="form-input" value="DattaAdmin@2024" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg btn-full" style="margin-top:20px;">
+        प्रवेश करा →
+      </button>
+
+      <div style="margin-top:20px;font-size:0.8rem;color:var(--text-muted);background:var(--bg-secondary);padding:10px;border-radius:var(--radius-md);text-align:center;">
+        🔑 डीफॉल्ट क्रेडेंशियल्स: <code>admin@dattadas.in</code> / <code>DattaAdmin@2024</code>
+      </div>
+    </form>
+  </div>
+
+  <script src="../../assets/js/core.js"></script>
+  <script>
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('admin-email').value;
+      const pass = document.getElementById('admin-password').value;
+
+      try {
+        Auth.loginAdmin({ email, password: pass });
+        Toast.success('✓ स्वागत आहे, प्रशासक!');
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 500);
+      } catch (err) {
+        Toast.error(err.message);
+      }
+    }
+  </script>
+</body>
+</html>

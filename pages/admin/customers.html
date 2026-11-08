@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ग्राहक यादी | दत्तदास प्रशासन</title>
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+</head>
+<body>
+
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-logo">
+        <div style="font-weight:800;color:var(--color-gold);letter-spacing:1px;font-size:1.1rem;">DATTADAS</div>
+        <div style="font-size:0.75rem;color:rgba(255,255,255,0.7);">प्रशासन नियंत्रण</div>
+      </div>
+      <nav class="admin-nav">
+        <a href="index.html" class="admin-nav-link">🏠 डॅशबोर्ड</a>
+        <a href="products.html" class="admin-nav-link">📚 उत्पादने (ई-बुक्स)</a>
+        <a href="orders.html" class="admin-nav-link">📦 ऑर्डर्स</a>
+        <a href="customers.html" class="admin-nav-link active">👥 ग्राहक यादी</a>
+        <a href="analytics.html" class="admin-nav-link">📊 विक्री विश्लेषण</a>
+        <a href="settings.html" class="admin-nav-link">⚙️ सेटिंग्ज</a>
+        <a href="../../index.html" class="admin-nav-link" target="_blank">🌐 वेबसाइट पहा</a>
+      </nav>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-topbar">
+        <h2 style="font-size:1.25rem;color:var(--color-maroon);margin:0;">नोंदणीकृत ग्राहक (Customer Accounts)</h2>
+      </header>
+
+      <div class="admin-content">
+        <div class="admin-table">
+          <div class="admin-table-header">
+            <div class="admin-table-title">सर्व ग्राहकांची यादी</div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>नाव</th>
+                <th>ईमेल</th>
+                <th>मोबाईल</th>
+                <th>नोंदणी तारीख</th>
+                <th>खरेदी संख्या</th>
+                <th>स्थिती</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>राजेश पाटील</strong></td>
+                <td>rajesh.patil@gmail.com</td>
+                <td>+91 98220 12345</td>
+                <td>१२ जाने २०२४</td>
+                <td>२ ई-बुक्स</td>
+                <td><span class="badge badge-success">सक्रिय</span></td>
+              </tr>
+              <tr>
+                <td><strong>सुनिता देशमुख</strong></td>
+                <td>sunita.d@yahoo.com</td>
+                <td>+91 94230 67890</td>
+                <td>१८ फेब्रु २०२४</td>
+                <td>३ ई-बुक्स</td>
+                <td><span class="badge badge-success">सक्रिय</span></td>
+              </tr>
+              <tr>
+                <td><strong>महेश कुलकर्णी</strong></td>
+                <td>mahesh.k@outlook.com</td>
+                <td>+91 98810 54321</td>
+                <td>०५ मार्च २०२४</td>
+                <td>१ ई-बुक</td>
+                <td><span class="badge badge-success">सक्रिय</span></td>
+              </tr>
+              <tr>
+                <td><strong>प्रिया जोशी</strong></td>
+                <td>priya.joshi@gmail.com</td>
+                <td>+91 97650 99887</td>
+                <td>२२ मार्च २०२४</td>
+                <td>१ ई-बुक</td>
+                <td><span class="badge badge-success">सक्रिय</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../assets/js/core.js"></script>
+</body>
+</html>

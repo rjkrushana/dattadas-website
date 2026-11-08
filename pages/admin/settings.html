@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>प्रणाली सेटिंग्ज | दत्तदास प्रशासन</title>
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+</head>
+<body>
+
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-logo">
+        <div style="font-weight:800;color:var(--color-gold);letter-spacing:1px;font-size:1.1rem;">DATTADAS</div>
+        <div style="font-size:0.75rem;color:rgba(255,255,255,0.7);">प्रशासन नियंत्रण</div>
+      </div>
+      <nav class="admin-nav">
+        <a href="index.html" class="admin-nav-link">🏠 डॅशबोर्ड</a>
+        <a href="products.html" class="admin-nav-link">📚 उत्पादने (ई-बुक्स)</a>
+        <a href="orders.html" class="admin-nav-link">📦 ऑर्डर्स</a>
+        <a href="customers.html" class="admin-nav-link">👥 ग्राहक यादी</a>
+        <a href="analytics.html" class="admin-nav-link">📊 विक्री विश्लेषण</a>
+        <a href="settings.html" class="admin-nav-link active">⚙️ सेटिंग्ज</a>
+        <a href="../../index.html" class="admin-nav-link" target="_blank">🌐 वेबसाइट पहा</a>
+      </nav>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-topbar">
+        <h2 style="font-size:1.25rem;color:var(--color-maroon);margin:0;">प्रणाली सेटिंग्ज (Settings)</h2>
+      </header>
+
+      <div class="admin-content" style="max-width:800px;">
+        <form onsubmit="handleSettingsSave(event)">
+          <!-- Brand Settings -->
+          <div style="background:white;padding:24px;border-radius:var(--radius-lg);border:1px solid #E0E0E0;margin-bottom:24px;">
+            <h3 style="color:var(--color-maroon);margin-bottom:16px;font-size:1.1rem;">१. ब्रँड व वेबसाइट माहिती</h3>
+            <div class="form-group">
+              <label class="form-label">वेबसाइट नाव:</label>
+              <input type="text" class="form-input" value="दत्तदास (DATTADAS)">
+            </div>
+            <div class="form-group">
+              <label class="form-label">ब्रीदवाक्य (Tagline):</label>
+              <input type="text" class="form-input" value="भक्ती, ज्ञान आणि संस्कारांचा डिजिटल ठेवा.">
+            </div>
+            <div class="form-group">
+              <label class="form-label">सपोर्ट ईमेल:</label>
+              <input type="email" class="form-input" value="support@dattadas.in">
+            </div>
+          </div>
+
+          <!-- Razorpay Settings -->
+          <div style="background:white;padding:24px;border-radius:var(--radius-lg);border:1px solid #E0E0E0;margin-bottom:24px;">
+            <h3 style="color:var(--color-maroon);margin-bottom:16px;font-size:1.1rem;">२. Razorpay पेमेंट गेटवे कॉन्फिगरेशन</h3>
+            <div class="form-group">
+              <label class="form-label">Razorpay Key ID:</label>
+              <input type="text" class="form-input" value="rzp_test_placeholder_key" placeholder="rzp_live_...">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Razorpay Key Secret:</label>
+              <input type="password" class="form-input" value="••••••••••••••••" placeholder="Secret Key">
+            </div>
+            <div class="form-group">
+              <label class="form-label">गेटवे मोड:</label>
+              <select class="form-select">
+                <option value="test" selected>सँडबॉक्स टेस्ट मोड (Sandbox / Test Mode)</option>
+                <option value="live">लाईव्ह प्रॉडक्शन मोड (Live Production Mode)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Save Button -->
+          <button type="submit" class="btn btn-primary btn-lg">
+            सेटिंग्ज जतन करा (Save Settings)
+          </button>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../assets/js/core.js"></script>
+  <script>
+    function handleSettingsSave(e) {
+      e.preventDefault();
+      Toast.success('✓ सेटिंग्ज यशस्वीरीत्या जतन केल्या!');
+    }
+  </script>
+</body>
+</html>

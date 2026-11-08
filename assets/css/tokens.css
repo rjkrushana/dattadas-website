@@ -1,0 +1,171 @@
+/* =====================================================
+   DATTADAS — Design Token System
+   Brand: दत्तदास | DattaDas.in
+   ===================================================== */
+
+:root {
+  /* ── BRAND COLORS ── */
+  --color-maroon:        #651F2B;
+  --color-maroon-dark:   #4A1620;
+  --color-maroon-light:  #8B2D3D;
+  --color-gold:          #C49A46;
+  --color-gold-dark:     #A07830;
+  --color-gold-light:    #D4B46A;
+  --color-gold-pale:     #F0E0B0;
+  --color-cream:         #FFF8EC;
+  --color-cream-dark:    #F5EDD8;
+  --color-brown:         #35251F;
+  --color-brown-light:   #5C3D2E;
+  --color-brown-muted:   #8B6E5A;
+  --color-saffron:       #D97827;
+  --color-saffron-dark:  #B5611A;
+  --color-saffron-light: #E8A060;
+  --color-beige:         #E8D9BE;
+  --color-beige-dark:    #D4C4A0;
+  --color-white:         #FFFFFF;
+
+  /* ── STATE COLORS ── */
+  --color-success:       #2E7D32;
+  --color-success-bg:    #E8F5E9;
+  --color-error:         #C62828;
+  --color-error-bg:      #FFEBEE;
+  --color-warning:       #E65100;
+  --color-warning-bg:    #FFF3E0;
+  --color-info:          #1565C0;
+  --color-info-bg:       #E3F2FD;
+
+  /* ── SEMANTIC MAPPINGS ── */
+  --bg-primary:          var(--color-cream);
+  --bg-secondary:        var(--color-cream-dark);
+  --bg-dark:             var(--color-brown);
+  --bg-darker:           #2A1A14;
+  --bg-header:           var(--color-maroon);
+  --bg-footer:           var(--color-brown);
+  --bg-card:             var(--color-white);
+  --bg-beige:            var(--color-beige);
+
+  --text-primary:        var(--color-brown);
+  --text-secondary:      var(--color-brown-light);
+  --text-muted:          var(--color-brown-muted);
+  --text-inverse:        var(--color-white);
+  --text-gold:           var(--color-gold);
+  --text-link:           var(--color-maroon);
+  --text-link-hover:     var(--color-saffron);
+
+  --border-light:        var(--color-beige);
+  --border-gold:         var(--color-gold);
+  --border-maroon:       var(--color-maroon-light);
+
+  /* ── TYPOGRAPHY ── */
+  --font-marathi:        'Mukta', 'Noto Sans Devanagari', 'Arial Unicode MS', serif;
+  --font-english:        'DM Sans', 'Inter', system-ui, sans-serif;
+  --font-editorial:      'Cormorant Garamond', 'Georgia', serif;
+
+  --text-xs:             0.75rem;    /* 12px */
+  --text-sm:             0.875rem;   /* 14px */
+  --text-base:           1rem;       /* 16px */
+  --text-md:             1.125rem;   /* 18px */
+  --text-lg:             1.25rem;    /* 20px */
+  --text-xl:             1.5rem;     /* 24px */
+  --text-2xl:            1.875rem;   /* 30px */
+  --text-3xl:            2.25rem;    /* 36px */
+  --text-4xl:            3rem;       /* 48px */
+  --text-5xl:            3.75rem;    /* 60px */
+
+  --leading-tight:       1.2;
+  --leading-snug:        1.4;
+  --leading-normal:      1.6;
+  --leading-relaxed:     1.8;
+  --leading-loose:       2.0;
+
+  --weight-light:        300;
+  --weight-normal:       400;
+  --weight-medium:       500;
+  --weight-semibold:     600;
+  --weight-bold:         700;
+  --weight-extrabold:    800;
+
+  /* ── SPACING ── */
+  --space-1:    0.25rem;
+  --space-2:    0.5rem;
+  --space-3:    0.75rem;
+  --space-4:    1rem;
+  --space-5:    1.25rem;
+  --space-6:    1.5rem;
+  --space-8:    2rem;
+  --space-10:   2.5rem;
+  --space-12:   3rem;
+  --space-16:   4rem;
+  --space-20:   5rem;
+  --space-24:   6rem;
+  --space-32:   8rem;
+
+  /* ── RADII ── */
+  --radius-sm:    6px;
+  --radius-md:    10px;
+  --radius-lg:    16px;
+  --radius-xl:    24px;
+  --radius-2xl:   32px;
+  --radius-full:  9999px;
+
+  /* ── SHADOWS ── */
+  --shadow-sm:   0 1px 3px rgba(53,37,31,0.08);
+  --shadow-md:   0 4px 16px rgba(53,37,31,0.12);
+  --shadow-lg:   0 10px 40px rgba(53,37,31,0.15);
+  --shadow-xl:   0 20px 60px rgba(53,37,31,0.18);
+  --shadow-gold: 0 4px 20px rgba(196,154,70,0.25);
+  --shadow-maroon: 0 4px 20px rgba(101,31,43,0.25);
+
+  /* ── TRANSITIONS ── */
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring:  cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-out:     cubic-bezier(0, 0, 0.2, 1);
+  --ease-in:      cubic-bezier(0.4, 0, 1, 1);
+  --duration-fast:   150ms;
+  --duration-base:   300ms;
+  --duration-slow:   500ms;
+  --duration-slower: 700ms;
+  --transition: all var(--duration-base) var(--ease-default);
+
+  /* ── Z-INDEX ── */
+  --z-below:    -1;
+  --z-base:      0;
+  --z-raised:   10;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-toast:    500;
+  --z-loader:   600;
+
+  /* ── LAYOUT ── */
+  --container-sm:    640px;
+  --container-md:    768px;
+  --container-lg:    1024px;
+  --container-xl:    1280px;
+  --container-2xl:   1440px;
+
+  /* ── ORNAMENT PATTERNS ── */
+  --pattern-mandala: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C49A46' fill-opacity='0.06'%3E%3Cpath d='M30 0C13.4 0 0 13.4 0 30s13.4 30 30 30 30-13.4 30-30S46.6 0 30 0zm0 54c-13.2 0-24-10.8-24-24S16.8 6 30 6s24 10.8 24 24-10.8 24-24 24z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #1A0F0A;
+    --bg-secondary: #231510;
+    --bg-card: #2A1A14;
+    --text-primary: #F0E6D6;
+    --text-secondary: #C4A88A;
+    --border-light: #3D2820;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

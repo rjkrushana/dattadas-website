@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>माझे ई-बुक्स | दत्तदास (DattaDas.in)</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    .my-books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; padding: 32px 0; }
+    .my-book-card {
+      background: var(--bg-card); border-radius: var(--radius-xl); border: 1px solid var(--border-light);
+      padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .my-book-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--color-gold); }
+    .my-book-header { display: flex; gap: 16px; align-items: center; }
+    .my-book-cover {
+      width: 64px; height: 84px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; color: var(--color-gold); flex-shrink: 0; box-shadow: var(--shadow-sm);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="header-container" data-active="account"></div>
+
+  <div class="page-hero">
+    <div class="container page-hero-content">
+      <nav class="breadcrumb">
+        <a href="../index.html">मुख्यपृष्ठ</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="dashboard.html">माझे खाते</a>
+        <span class="breadcrumb-sep">/</span>
+        <span>माझे ई-बुक्स</span>
+      </nav>
+      <h1 class="page-hero-title">माझे ई-बुक्स (डिजिटल लायब्ररी)</h1>
+      <p class="page-hero-desc">आपण खरेदी केलेले सर्व पवित्र ग्रंथ व साहित्याचा वैयक्तिक संग्रह</p>
+    </div>
+  </div>
+
+  <main class="container" style="padding:48px 0;">
+    <div style="background:var(--bg-secondary);padding:16px 24px;border-radius:var(--radius-lg);border:1px solid var(--border-light);margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <div style="font-size:0.95rem;color:var(--text-secondary);">
+        🔒 <strong>डिजिटल हक्क सुरक्षा:</strong> आपले सर्व ई-बुक्स आपल्या वैयक्तिक खात्याशी जोडलेले आहेत. आपण कधीही PDF किंवा ePub फॉरमॅटमध्ये डाऊनलोड करू शकता.
+      </div>
+      <a href="../books.html" class="btn btn-outline-maroon btn-sm">+ आणखी पुस्तके जोडा</a>
+    </div>
+
+    <div class="my-books-grid" id="my-books-container">
+      <!-- Populated via JS -->
+    </div>
+  </main>
+
+  <div id="footer-container"></div>
+  <div id="cart-drawer-container"></div>
+  <div id="auth-modal-container"></div>
+
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let user = Auth.currentUser();
+      if (!user) {
+        user = { id: 'U_DEMO', name: 'भाविक वाचक', email: 'user@example.com', role: 'customer' };
+        Store.set('user', user);
+      }
+
+      let entitlements = Orders.getEntitlements(user.id);
+      if (entitlements.length === 0) {
+        entitlements = ['P001', 'P002']; // Default demo books
+      }
+
+      const container = document.getElementById('my-books-container');
+      const books = DATTADAS_PRODUCTS.filter(p => entitlements.includes(p.id));
+
+      if (books.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:64px 20px;background:var(--bg-card);border-radius:var(--radius-xl);border:1px solid var(--border-light);">
+            <div style="font-size:3rem;margin-bottom:16px;">📚</div>
+            <h3 style="color:var(--color-maroon);margin-bottom:8px;">अद्याप कोणतेही ई-बुक खरेदी केलेले नाही</h3>
+            <p style="color:var(--text-muted);margin-bottom:20px;">आपल्या आवडत्या ग्रंथांचा संग्रह सुरू करा.</p>
+            <a href="../books.html" class="btn btn-primary">सर्व ई-बुक्स पहा</a>
+          </div>
+        `;
+      } else {
+        container.innerHTML = books.map(book => `
+          <div class="my-book-card">
+            <div class="my-book-header">
+              <div class="my-book-cover" style="background:${book.coverColor};">
+                ${book.coverEmoji}
+              </div>
+              <div>
+                <h3 style="font-size:1.1rem;color:var(--text-primary);margin-bottom:4px;">${book.titleMarathi}</h3>
+                <div style="font-size:0.85rem;color:var(--text-muted);">${book.author}</div>
+                <div style="font-size:0.8rem;color:var(--color-saffron);font-weight:600;margin-top:2px;">${book.format} • ${book.pages} पाने</div>
+              </div>
+            </div>
+
+            <div style="border-top:1px solid var(--border-light);padding-top:16px;display:flex;gap:12px;">
+              <button onclick="downloadEbook('${book.id}')" class="btn btn-primary btn-sm" style="flex:1;">
+                📥 PDF डाऊनलोड
+              </button>
+              <a href="../product.html?id=${book.id}" class="btn btn-outline-maroon btn-sm">
+                माहिती
+              </a>
+            </div>
+          </div>
+        `).join('');
+      }
+    });
+
+    function downloadEbook(bookId) {
+      const book = DATTADAS_PRODUCTS.find(p => p.id === bookId);
+      const user = Auth.currentUser();
+
+      if (user) {
+        Downloads.log(bookId, user.id);
+      }
+
+      const content = `
+=====================================================
+${book ? book.titleMarathi : 'दत्तदास ई-बुक'}
+दत्तदास डिजिटल पब्लिकेशन (https://dattadas.in)
+भक्ती, ज्ञान आणि संस्कारांचा डिजिटल ठेवा
+=====================================================
+
+लेखक: ${book ? book.author : 'दत्तदास'}
+भाषा: मराठी
+पाने: ${book ? book.pages : '२४०'}
+
+श्री गुरुदेव दत्त!
+हे अधिकृत ई-बुक खरेदी केल्याबद्दल धन्यवाद.
+ग्राहक: ${user ? user.name : 'मान्यवर वाचक'}
+दिनांक: ${new Date().toLocaleDateString('mr-IN')}
+
+=====================================================
+[संपूर्ण ग्रंथ मजकूर व श्लोक निरूपण]
+=====================================================
+      `.trim();
+
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${book?.slug || 'ebook'}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      Toast.success(`📥 "${book?.titleMarathi}" डाऊनलोड सुरू झाले!`);
+    }
+  </script>
+</body>
+</html>
