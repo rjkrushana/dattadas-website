@@ -436,8 +436,8 @@ function renderCartDrawerItems() {
     const disc = Price.discount(item.originalPrice, item.price);
     return `
     <div class="cart-item" style="display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--border-light);align-items:flex-start">
-      <div style="width:56px;height:72px;border-radius:8px;background:${product?.coverColor || '#651F2B'};display:flex;align-items:center;justify-content:center;color:var(--color-gold);font-size:1.5rem;flex-shrink:0">
-        ${product?.coverEmoji || '📚'}
+      <div style="width:56px;height:72px;border-radius:8px;background:${product?.coverColor || '#651F2B'};display:flex;align-items:center;justify-content:center;color:var(--color-gold);font-size:1.5rem;flex-shrink:0;overflow:hidden;position:relative;">
+        ${product?.coverImage ? `<img src="${product.coverImage}" alt="${item.title}" style="width:100%;height:100%;object-fit:cover;">` : (product?.coverEmoji || '📚')}
       </div>
       <div style="flex:1;min-width:0">
         <h4 style="font-size:0.9rem;font-weight:600;margin-bottom:0.25rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${item.title}</h4>

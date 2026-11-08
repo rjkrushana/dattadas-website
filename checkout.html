@@ -269,8 +269,8 @@
         const prod = DATTADAS_PRODUCTS.find(p => p.id === item.productId);
         return `
           <div class="order-summary-item">
-            <div class="order-item-cover" style="background:${prod?.coverColor || 'var(--color-maroon)'};color:var(--color-gold);">
-              ${prod?.coverEmoji || '📖'}
+            <div class="order-item-cover" style="background:${prod?.coverColor || 'var(--color-maroon)'};color:var(--color-gold);position:relative;overflow:hidden;">
+              ${prod?.coverImage ? `<img src="${prod.coverImage}" alt="${item.title}" style="width:100%;height:100%;object-fit:cover;">` : (prod?.coverEmoji || '📖')}
             </div>
             <div style="flex:1;">
               <div class="order-item-title">${item.title}</div>

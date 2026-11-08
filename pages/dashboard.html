@@ -154,7 +154,9 @@
         recentContainer.innerHTML = purchased.map(b => `
           <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--bg-secondary);border-radius:var(--radius-md);margin-bottom:12px;gap:16px;">
             <div style="display:flex;align-items:center;gap:12px;">
-              <span style="font-size:1.8rem;">${b.coverEmoji}</span>
+              <div style="width:40px;height:52px;border-radius:4px;overflow:hidden;flex-shrink:0;background:${b.coverColor};display:flex;align-items:center;justify-content:center;">
+                ${b.coverImage ? `<img src="../${b.coverImage}" alt="${b.titleMarathi}" style="width:100%;height:100%;object-fit:cover;">` : b.coverEmoji}
+              </div>
               <div>
                 <strong>${b.titleMarathi}</strong>
                 <div style="font-size:0.8rem;color:var(--text-muted);">${b.author} • ${b.format}</div>
